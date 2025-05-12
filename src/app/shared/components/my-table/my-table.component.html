@@ -1,8 +1,14 @@
 <table>
   <thead>
     <tr>
-      <th *ngFor="let header of tableConfig.headers">
+      <th *ngFor="let header of tableConfig.headers" (click) = "sortData(header.key)">
         {{ header.label }}
+                <i class="fa"
+           [ngClass]="{
+             'fa-sort': !isSortedColumn(header.key!),
+             'fa-sort-asc': isSortedColumn(header.key!) && sortDirection === 'asc',
+             'fa-sort-desc': isSortedColumn(header.key!) && sortDirection === 'desc'
+           }"></i>
       </th>
     </tr>
   </thead>
@@ -11,6 +17,7 @@
       <td *ngFor="let header of tableConfig.headers">
         {{ header.key ? row[header.key] : '' }}
       </td>
+      <td> <app-my-button [buttonConfig]="buttonConfig"></app-my-button> </td>
     </tr>
   </tbody>
 </table>
