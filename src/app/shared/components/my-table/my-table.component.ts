@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MyTableConfig } from './my-table-config';
+import { MyTableActionEnum, MyTableConfig } from './my-table-config';
 import { CommonModule } from '@angular/common';
 import { MyButtonConfig } from '../my-button/my-button-config';
 import { MyButtonComponent } from '../my-button/my-button.component';
@@ -15,14 +15,17 @@ import { TablePaginationPipe } from './pipes/table-pagination.pipe';
     MyButtonComponent,
     FormsModule,
     TableFilterPipe,
-    TablePaginationPipe
+    TablePaginationPipe,
   ],
   templateUrl: './my-table.component.html',
   styleUrl: './my-table.component.css',
 })
 export class MyTableComponent {
   @Input() tableConfig!: MyTableConfig;
+  actionType = MyTableActionEnum;
+
   @Input() data!: any[];
+  childComponentEvent: string = '';
 
   buttonConfig: MyButtonConfig = {
     customCssClass: 'btn btn-primary',
@@ -88,4 +91,7 @@ export class MyTableComponent {
     }
   }
 
+  handleButtonClick(event: string) {
+    this.childComponentEvent = event;
+  }
 }

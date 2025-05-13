@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MyButtonConfig } from './my-button-config';
 
 @Component({
@@ -11,4 +11,9 @@ import { MyButtonConfig } from './my-button-config';
 })
 export class MyButtonComponent {
   @Input() buttonConfig!: MyButtonConfig;
+  @Output() buttonClick = new EventEmitter<string>();
+
+  onClick() {
+    this.buttonClick.emit("Cliccato pulsante: " + this.buttonConfig.text);
+  }
 }

@@ -3,12 +3,10 @@
     <label for="filterColumn" class="form-label fw-semibold text-primary">
       <i class="fa fa-columns me-1"></i> Colonna da filtrare
     </label>
-    <select
-      id="filterColumn"
-      class="form-select shadow-sm text-capitalize"
-      [(ngModel)]="selectedFilterColumn">
+    <select id="filterColumn" class="form-select shadow-sm text-capitalize" [(ngModel)]="selectedFilterColumn">
       <option value="">-- Seleziona colonna --</option>
-      <option *ngFor="let col of tableConfig.search?.columns" [value]="col" class="text-capitalize text-primary fw-semibold">
+      <option *ngFor="let col of tableConfig.search?.columns" [value]="col"
+        class="text-capitalize text-primary fw-semibold">
         {{ col }}
       </option>
     </select>
@@ -18,76 +16,80 @@
     <label for="filterText" class="form-label fw-semibold text-primary">
       <i class="fa fa-filter me-1"></i> Testo da cercare
     </label>
-    <input
-      id="filterText"
-      type="text"
-      class="form-control shadow-sm"
-      placeholder="Inserisci filtro"
-      [(ngModel)]="filterText"
-    />
+    <input id="filterText" type="text" class="form-control shadow-sm" placeholder="Inserisci filtro"
+      [(ngModel)]="filterText" />
   </div>
 </div>
 
 
 <ng-container *ngIf="data | tableFilter:filterText:selectedFilterColumn:sortedColumn:sortDirection as filtered">
-<table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th *ngFor="let header of tableConfig.headers" (click) = "sortData(header.key)">
-        {{ header.label }}
-                <i class="fa"
-           [ngClass]="{
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th *ngFor="let header of tableConfig.headers" (click)="sortData(header.key)">
+          {{ header.label }}
+          <i class="fa" [ngClass]="{
              'fa-sort': !isSortedColumn(header.key!),
              'fa-sort-asc': isSortedColumn(header.key!) && sortDirection === 'asc',
              'fa-sort-desc': isSortedColumn(header.key!) && sortDirection === 'desc'
            }"></i>
-      </th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of filtered | tableFilter:filterText:selectedFilterColumn:sortedColumn:sortDirection | tablePagination:currentPage:tableConfig.pagination?.itemPerPage">
-      <td *ngFor="let header of tableConfig.headers">
-        {{ header.key ? row[header.key] : '' }}
-      </td>
-      <td> <app-my-button [buttonConfig]="buttonConfig"></app-my-button> </td>
-    </tr>
-  </tbody>
-</table>
+        </th>
+        <th class="d-flex justify-content-between align-items-center">
+          <span>Actions</span>
+          <ng-container *ngFor="let action of tableConfig.actions">
+            <app-my-button *ngIf="action.type === actionType.NEW_ROW" [buttonConfig]="action.buttonConfig!"
+              (buttonClick)="handleButtonClick($event)"></app-my-button>
+          </ng-container>
+        </th>
 
-<div class="d-flex align-items-center mb-2">
-  <p class="d-flex align-items-center gap-2 me-3 mb-0">
-    <i class="fa fa-file-alt text-primary"></i>
-    <span class="fw-semibold">Pagina {{ currentPage }}</span>
-  </p>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let row of filtered | tableFilter:filterText:selectedFilterColumn:sortedColumn:sortDirection | tablePagination:currentPage:tableConfig.pagination?.itemPerPage">
+        <td *ngFor="let header of tableConfig.headers">
+          {{ header.key ? row[header.key] : '' }}
+        </td>
+        <td *ngIf="tableConfig.actions">
+          <ng-container *ngFor="let action of tableConfig.actions">
+            <app-my-button class="me-2" *ngIf="action.type !== actionType.NEW_ROW" [buttonConfig]="action.buttonConfig!"
+              (buttonClick)="handleButtonClick($event)"></app-my-button>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  <div class="dropdown">
-    <button 
-      class="btn btn-secondary dropdown-toggle" 
-      type="button" 
-      id="itemsPerPageDropdown" 
-      data-bs-toggle="dropdown" 
-      aria-expanded="false">
-      <i class="fa fa-list me-1"></i> {{ itemPerPage }} per pagina
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
-      <li *ngFor="let option of tableConfig.pagination?.itemPerPageOptions">
-        <a 
-          class="dropdown-item text-primary" 
-          href="#" 
-          (click)="onItemsPerPageChange(option)">
-          {{ option }}
-        </a>
-      </li>
-    </ul>
+  <div class="d-flex align-items-center mb-2">
+    <p class="d-flex align-items-center gap-2 me-3 mb-0">
+      <i class="fa fa-file-alt text-primary"></i>
+      <span class="fw-semibold">Pagina {{ currentPage }}</span>
+    </p>
+
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="itemsPerPageDropdown"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-list me-1"></i> {{ itemPerPage }} per pagina
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
+        <li *ngFor="let option of tableConfig.pagination?.itemPerPageOptions">
+          <a class="dropdown-item text-primary" href="#" (click)="onItemsPerPageChange(option)">
+            {{ option }}
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
 
   <nav class="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item"><button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button></li>
-    <li class="page-item"><button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage * tableConfig.pagination?.itemPerPage! >= filtered.length">Next</button></li>
-  </ul>
+    <ul class="pagination">
+      <li class="page-item"><button class="page-link" (click)="goToPage(currentPage - 1)"
+          [disabled]="currentPage === 1">Prev</button></li>
+      <li class="page-item"><button class="page-link" (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage * tableConfig.pagination?.itemPerPage! >= filtered.length">Next</button></li>
+    </ul>
   </nav>
 </ng-container>
-
+<div *ngIf="childComponentEvent" class="alert alert-primary" role="alert">
+  {{childComponentEvent}}
+</div>

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { MyButtonComponent } from './shared/components/my-button/my-button.component';
-import { MyButtonConfig } from './shared/components/my-button/my-button-config';
 import { MyTableComponent } from './shared/components/my-table/my-table.component';
-import { MyTableConfig } from './shared/components/my-table/my-table-config';
+import { MyTableActionEnum, MyTableConfig } from './shared/components/my-table/my-table-config';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +27,33 @@ export class AppComponent {
   pagination: {
     itemPerPage: 10,
     itemPerPageOptions: [5, 10, 20, 50],
-  }
+  },
+  actions: [
+    {
+      type: MyTableActionEnum.NEW_ROW,
+      buttonConfig: {
+        customCssClass: 'btn btn-primary',
+        text: 'Add',
+        icon: 'fa fa-plus',
+      },
+    },
+    {
+      type: MyTableActionEnum.EDIT,
+      buttonConfig: {
+        customCssClass: 'btn btn-warning',
+        text: 'Edit',
+        icon: 'fa fa-edit',
+      },
+    },
+    {
+      type: MyTableActionEnum.DELETE,
+      buttonConfig: {
+        customCssClass: 'btn btn-danger',
+        text: 'Delete',
+        icon: 'fa fa-trash',
+      },
+    },
+  ],
   };
 
   data = [
