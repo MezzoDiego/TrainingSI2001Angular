@@ -2,6 +2,7 @@ export class MyTableConfig {
   headers?: MyHeaders[];
   order?: MyOrder;
   search?: MySearch;
+  pagination?: MyPagination;
 }
 
 export class MyHeaders {
@@ -16,4 +17,9 @@ export class MyOrder {
 
 export class MySearch {
   columns?: string[];
+}
+
+export class MyPagination {
+  itemPerPage?: number;
+  itemPerPageOptions?: number[];
 }

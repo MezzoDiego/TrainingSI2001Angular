@@ -4,12 +4,19 @@ import { CommonModule } from '@angular/common';
 import { MyButtonConfig } from '../my-button/my-button-config';
 import { MyButtonComponent } from '../my-button/my-button.component';
 import { FormsModule } from '@angular/forms';
-import { TableFilterPipe } from './table-filter.pipe';
+import { TableFilterPipe } from './pipes/table-filter.pipe';
+import { TablePaginationPipe } from './pipes/table-pagination.pipe';
 
 @Component({
   selector: 'app-my-table',
   standalone: true,
-  imports: [CommonModule, MyButtonComponent, FormsModule, TableFilterPipe],
+  imports: [
+    CommonModule,
+    MyButtonComponent,
+    FormsModule,
+    TableFilterPipe,
+    TablePaginationPipe
+  ],
   templateUrl: './my-table.component.html',
   styleUrl: './my-table.component.css',
 })
@@ -17,13 +24,24 @@ export class MyTableComponent {
   @Input() tableConfig!: MyTableConfig;
   @Input() data!: any[];
 
+  buttonConfig: MyButtonConfig = {
+    customCssClass: 'btn btn-primary',
+    text: 'Click me',
+    icon: 'fa fa-hand-pointer-o',
+  };
+  // Ordinamento
   sortedColumn?: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
-
+  // Filtraggio
   selectedFilterColumn: string = '';
   filterText: string = '';
+  //Paginazione
+  currentPage: number = 1;
+  itemPerPage: number = 0;
 
+  // Logica di inizializzazione componente
   ngOnInit() {
+    this.itemPerPage = this.tableConfig.pagination?.itemPerPage || 10;
     if (this.tableConfig.order) {
       this.sortedColumn = this.tableConfig.order.defaultColumn;
       this.sortDirection =
@@ -31,7 +49,7 @@ export class MyTableComponent {
       this.sortData(this.sortedColumn, false);
     }
   }
-
+  // Ordinamento colonne
   sortData(column?: string, toggle: boolean = true) {
     if (!column) return;
 
@@ -53,13 +71,21 @@ export class MyTableComponent {
       return this.sortDirection === 'asc' ? comparison : -comparison;
     });
   }
-
+  // Controllo per verificare se la colonna è ordinata
   isSortedColumn(column: string): boolean {
     return this.sortedColumn === column;
   }
-  buttonConfig: MyButtonConfig = {
-    customCssClass: 'btn btn-primary',
-    text: 'Click me',
-    icon: 'fa fa-hand-pointer-o',
-  };
+  // Paginazione
+  goToPage(page: number) {
+    this.currentPage = page;
+  }
+
+  onItemsPerPageChange(value: number) {
+    this.itemPerPage = value;
+    this.currentPage = 1;
+    if (this.tableConfig.pagination) {
+      this.tableConfig.pagination.itemPerPage = value;
+    }
+  }
+
 }
