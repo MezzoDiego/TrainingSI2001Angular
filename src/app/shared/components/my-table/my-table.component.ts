@@ -3,11 +3,13 @@ import { MyTableConfig } from './my-table-config';
 import { CommonModule } from '@angular/common';
 import { MyButtonConfig } from '../my-button/my-button-config';
 import { MyButtonComponent } from '../my-button/my-button.component';
+import { FormsModule } from '@angular/forms';
+import { TableFilterPipe } from './table-filter.pipe';
 
 @Component({
   selector: 'app-my-table',
   standalone: true,
-  imports: [CommonModule, MyButtonComponent],
+  imports: [CommonModule, MyButtonComponent, FormsModule, TableFilterPipe],
   templateUrl: './my-table.component.html',
   styleUrl: './my-table.component.css',
 })
@@ -17,6 +19,9 @@ export class MyTableComponent {
 
   sortedColumn?: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
+
+  selectedFilterColumn: string = '';
+  filterText: string = '';
 
   ngOnInit() {
     if (this.tableConfig.order) {
@@ -52,7 +57,7 @@ export class MyTableComponent {
   isSortedColumn(column: string): boolean {
     return this.sortedColumn === column;
   }
-    buttonConfig: MyButtonConfig = {
+  buttonConfig: MyButtonConfig = {
     customCssClass: 'btn btn-primary',
     text: 'Click me',
     icon: 'fa fa-hand-pointer-o',

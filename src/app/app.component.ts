@@ -23,6 +23,9 @@ export class AppComponent {
       defaultColumn: 'name',
       orderType: 'asc',
     },
+  search: {
+    columns: ['name', 'age', 'email']
+  }
   };
 
   data = [
