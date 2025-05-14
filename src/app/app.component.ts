@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, Signal, signal } from '@angular/core';
 import { MyTableComponent } from './shared/components/my-table/my-table.component';
-import { MyTableActionEnum, MyTableConfig } from './shared/components/my-table/my-table-config';
+import { TABLE_CONFIG_SIGNAL, TABLE_DATA_SIGNAL } from './shared/components/my-table/config/my-table-signals';
+import { MyTableActionEnum, MyTableConfig } from './shared/components/my-table/config/my-table-config';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,14 @@ import { MyTableActionEnum, MyTableConfig } from './shared/components/my-table/m
   imports: [MyTableComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  providers: [
+  { provide: TABLE_CONFIG_SIGNAL, useFactory: () => inject(AppComponent).tableConfig },
+  { provide: TABLE_DATA_SIGNAL, useFactory: () => inject(AppComponent).data },
+  ]
 })
 export class AppComponent {
 
-  tableConfig: MyTableConfig = {
+  tableConfig: Signal<MyTableConfig> = signal<MyTableConfig>({
     headers: [
       { key: 'name', label: 'Name' },
       { key: 'age', label: 'Age' },
@@ -53,10 +58,10 @@ export class AppComponent {
         icon: 'fa fa-trash',
       },
     },
-  ],
-  };
+  ]
+  });
 
-  data = [
+  data: Signal<any[]> = signal<any[]>([
     { name: 'Mario', age: 30, email: 'mario@example.com' },
     { name: 'Luca', age: 25, email: 'luca@example.com' },
     { name: 'Luigi', age: 33, email: 'luigi@example.com' },
@@ -92,5 +97,5 @@ export class AppComponent {
     { name: 'Prato', age: 21, email: 'pratinopratello@example.com' },
     { name: 'Hotel', age: 22, email: 'california@example.com' },
     { name: 'Nirvana', age: 27, email: 'wow21@example.com' }
-  ];
+  ]);
 }

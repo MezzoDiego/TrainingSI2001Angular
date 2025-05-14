@@ -1,11 +1,25 @@
-import { Component, Input } from '@angular/core';
-import { MyTableActionEnum, MyTableConfig } from './my-table-config';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  Input,
+  signal,
+  Signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MyButtonConfig } from '../my-button/my-button-config';
 import { MyButtonComponent } from '../my-button/my-button.component';
 import { FormsModule } from '@angular/forms';
 import { TableFilterPipe } from './pipes/table-filter.pipe';
 import { TablePaginationPipe } from './pipes/table-pagination.pipe';
+import {
+  TABLE_CONFIG_SIGNAL,
+  TABLE_DATA_SIGNAL,
+} from './config/my-table-signals';
+import {
+  MyAction,
+  MyTableActionEnum,
+  MyTableConfig,
+} from './config/my-table-config';
 
 @Component({
   selector: 'app-my-table',
@@ -21,17 +35,12 @@ import { TablePaginationPipe } from './pipes/table-pagination.pipe';
   styleUrl: './my-table.component.css',
 })
 export class MyTableComponent {
-  @Input() tableConfig!: MyTableConfig;
-  actionType = MyTableActionEnum;
+  tableConfig: Signal<MyTableConfig> = inject(TABLE_CONFIG_SIGNAL);
+  data: Signal<any[]> = inject(TABLE_DATA_SIGNAL);
 
-  @Input() data!: any[];
+  actionType = MyTableActionEnum;
   childComponentEvent: string = '';
 
-  buttonConfig: MyButtonConfig = {
-    customCssClass: 'btn btn-primary',
-    text: 'Click me',
-    icon: 'fa fa-hand-pointer-o',
-  };
   // Ordinamento
   sortedColumn?: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
@@ -44,11 +53,11 @@ export class MyTableComponent {
 
   // Logica di inizializzazione componente
   ngOnInit() {
-    this.itemPerPage = this.tableConfig.pagination?.itemPerPage || 10;
-    if (this.tableConfig.order) {
-      this.sortedColumn = this.tableConfig.order.defaultColumn;
+    this.itemPerPage = this.tableConfig().pagination?.itemPerPage || 10;
+    if (this.tableConfig().order) {
+      this.sortedColumn = this.tableConfig().order!.defaultColumn;
       this.sortDirection =
-        this.tableConfig.order.orderType === 'desc' ? 'desc' : 'asc';
+        this.tableConfig().order!.orderType === 'desc' ? 'desc' : 'asc';
       this.sortData(this.sortedColumn, false);
     }
   }
@@ -63,7 +72,7 @@ export class MyTableComponent {
       this.sortDirection = 'asc';
     }
 
-    this.data.sort((a, b) => {
+    this.data().sort((a, b) => {
       const aVal = a[column];
       const bVal = b[column];
 
@@ -86,8 +95,8 @@ export class MyTableComponent {
   onItemsPerPageChange(value: number) {
     this.itemPerPage = value;
     this.currentPage = 1;
-    if (this.tableConfig.pagination) {
-      this.tableConfig.pagination.itemPerPage = value;
+    if (this.tableConfig().pagination) {
+      this.tableConfig().pagination!.itemPerPage = value;
     }
   }
 

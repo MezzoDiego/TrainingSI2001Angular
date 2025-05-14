@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MyButtonConfig } from './my-button-config';
+import { MyButtonConfig } from './config/my-button-config';
 
 @Component({
   selector: 'app-my-button',
