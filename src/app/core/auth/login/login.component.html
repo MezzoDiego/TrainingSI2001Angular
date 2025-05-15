@@ -1,0 +1,37 @@
+<main class="form-signin text-center flex-shrink-0 " >
+    <div class="container">
+      <form (ngSubmit)="onClick(loginForm)" #loginForm="ngForm" class="form-signin bg-secondary bg-opacity-50">
+          <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+          
+          
+            <div class="form-floating ">
+            <input type="text" name="username" class="form-control" id="inputUsername" [ngModel] placeholder="username" required
+            #userVar="ngModel" [ngClass]="{'is-invalid': (userVar.touched || userVar.dirty) && !userVar.valid }">
+            <label for="inputUsername">Username</label>
+            <span class="invalid-feedback">
+              <span *ngIf="userVar.errors?.['required']">
+                  Prego inserire un valore
+              </span>
+          </span>
+          </div>
+          <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="inputPassword" [ngModel] placeholder="Password" required #passwordVar="ngModel"
+            [ngClass]="{'is-invalid': (passwordVar.touched || passwordVar.dirty) && !passwordVar.valid }">
+            <label for="inputPassword">Password</label>
+            <span class="invalid-feedback">
+              <span *ngIf="passwordVar.errors?.['required']">
+                  Prego inserire un valore
+              </span>
+          </span>
+          </div>
+      
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="loginForm.invalid">Sign in</button>
+          <p class="mt-5 mb-3 text-muted">&copy; 2025-2026</p>
+      </form>
+    </div>
+  </main>

@@ -1,10 +1,6 @@
 import {
   Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  inject,
-  Input,
-  signal,
-  Signal,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyButtonComponent } from '../my-button/my-button.component';
@@ -12,11 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { TableFilterPipe } from './pipes/table-filter.pipe';
 import { TablePaginationPipe } from './pipes/table-pagination.pipe';
 import {
-  TABLE_CONFIG_SIGNAL,
-  TABLE_DATA_SIGNAL,
-} from './config/my-table-signals';
-import {
-  MyAction,
   MyTableActionEnum,
   MyTableConfig,
 } from './config/my-table-config';
@@ -35,21 +26,21 @@ import {
   styleUrl: './my-table.component.css',
 })
 export class MyTableComponent {
-  tableConfig: Signal<MyTableConfig> = inject(TABLE_CONFIG_SIGNAL);
-  data: Signal<any[]> = inject(TABLE_DATA_SIGNAL);
+  tableConfig = input.required<MyTableConfig>();
+  data = input.required<any[]>();
 
   actionType = MyTableActionEnum;
-  childComponentEvent: string = '';
+  childComponentEvent = '';
 
   // Ordinamento
-  sortedColumn?: string = '';
+  sortedColumn? = '';
   sortDirection: 'asc' | 'desc' = 'asc';
   // Filtraggio
-  selectedFilterColumn: string = '';
-  filterText: string = '';
+  selectedFilterColumn = '';
+  filterText = '';
   //Paginazione
-  currentPage: number = 1;
-  itemPerPage: number = 0;
+  currentPage = 1;
+  itemPerPage = 0;
 
   // Logica di inizializzazione componente
   ngOnInit() {

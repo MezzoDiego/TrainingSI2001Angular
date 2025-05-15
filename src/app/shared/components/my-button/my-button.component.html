@@ -1,6 +1,6 @@
-<button [ngClass]="buttonConfig.customCssClass" (click)="onClick()">
-      @if (buttonConfig.icon) {
-    <i [class]="buttonConfig.icon"></i>
+<button [ngClass]="buttonConfig().customCssClass" (click)="onClick()">
+      @if (buttonConfig().icon) {
+    <i [class]="buttonConfig().icon"></i>
   }
-    {{ buttonConfig.text }}
+    {{ buttonConfig().text }}
 </button>
