@@ -79,6 +79,8 @@ export class AuthService {
 
   logout() {
     this.setUserLogged(null);
+    localStorage.removeItem('jwt-token');
+    localStorage.removeItem('username');
     this.router.navigate(['/login']);
   }
 }

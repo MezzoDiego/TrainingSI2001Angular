@@ -1,2 +1,15 @@
+<div class="d-flex flex-column min-vh-100">
+
+@if (authService.isLoggedIn()) {
+<app-navbar />
+}
+
+<main class="flex-fill">
 <router-outlet></router-outlet>
- <!-- <app-my-table [tableConfig]="tableConfig()" [data]="data()"></app-my-table> -->
+</main>
+
+@if (authService.isLoggedIn()) {
+<app-footer />
+}
+<!-- <app-my-table [tableConfig]="tableConfig()" [data]="data()"></app-my-table> -->
+</div>

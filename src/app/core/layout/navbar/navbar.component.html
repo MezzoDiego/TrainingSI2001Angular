@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0;">
+  <a class="navbar-brand ms-3" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" href="#">RentalCars</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="#">Parco Auto</a>
+      <a class="nav-item nav-link" href="#">Profilo Utente</a>
+      <a class="nav-item nav-link" href="#">Prenotazioni</a>
+    </div>
+  </div>
+<div class="col-md-2 d-flex justify-content-end gap-4">
+  <div class="navbar-text text-end flex-shrink-1 text-break">
+    Utente:<br />
+    {{ authService.getUser()?.username | uppercase }}
+  </div>
+  <div class="navbar-text me-3">
+    <app-my-button [buttonConfig]="buttonConfig" (click)="logout()"/>
+  </div>
+</div>
+
+</nav>
