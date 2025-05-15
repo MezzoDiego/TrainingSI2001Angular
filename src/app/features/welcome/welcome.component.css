@@ -1,1 +1,18 @@
+.blur-jumbotron {
+  background-color: rgba(128, 128, 128, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 2rem;
+}
 
+.jumbotron-bg {
+  background-image: url('../../../assets/rental-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  padding: 21vh;
+  border-radius: 10px;
+  filter: blur(2px);
+}

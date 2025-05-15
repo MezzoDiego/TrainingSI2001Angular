@@ -23,12 +23,18 @@ export class AuthService {
   readonly isLoggedIn = computed(() => !!this.user()?.token);
 
   constructor() {
+  const storedUser = sessionStorage.getItem('user');
+  if (storedUser) {
+    this.user.set(JSON.parse(storedUser));
+  }
   const token = localStorage.getItem('jwt-token');
   const username = localStorage.getItem('username');
 
   if (token && username) {
     this.setUserLogged({ username, token });
   }
+
+  
 }
 
   login(loginForm: Utente): Observable<Utente> {
@@ -59,18 +65,27 @@ export class AuthService {
 
     this.user.set(user);
     
-    this.http
-      .get<{ role: string }>(`${this.apiServerUrl}/api/utente/userInfo`)
-      .pipe(
-        map((res) => {
-          user.ruolo = res.role;
-          return user;
-        }),
-        tap((updatedUser) => {
-          this.user.set(updatedUser);
-        })
-      )
-      .subscribe();
+    // this.http
+    //   .get<{ role: string, nome: string }>(`${this.apiServerUrl}/api/utente/userInfo`)
+    //   .pipe(
+    //     map((res) => {
+    //       user.ruolo = res.role;
+    //       user.nome = res.nome;
+    //       return user;
+    //     }),
+    //     tap((updatedUser) => {
+    //       this.user.set(updatedUser);
+    //       sessionStorage.setItem('user', JSON.stringify(updatedUser));
+    //     })
+    //   )
+    //   .subscribe();
+
+      this.http.get<{ role: string, nome: string }>(`${this.apiServerUrl}/api/utente/userInfo`).subscribe({
+    next: (res) => {
+      const updatedUser = { ...user, ruolo: res.role, nome: res.nome };
+      this.user.set(updatedUser);
+    }
+  });
   }
 
   getUserToken() {
