@@ -1,0 +1,13 @@
+@if (showDialog) {
+  <app-my-dialog (closedDialog)="closeDialog()" (operationConfirmed)="confirmDelete()" />
+}
+<div class="background-wrapper">
+  <div class="overlay-content">
+    <h1>Gestione Clientela</h1>
+    <p>In questa sezione puoi visualizzare, aggiungere, modificare o eliminare gli account dei tuoi clienti.
+    </p>
+    <div class="table-wrapper">
+      <app-my-table [tableConfig]="tableConfig()" [data]="data()" [area]="area()" (operation)="handleOperation($event)"></app-my-table>
+    </div>
+  </div>
+</div>

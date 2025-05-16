@@ -1,14 +1,12 @@
 import {
   inject,
   Injectable,
-  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Veicolo } from '../../model/veicolo';
-import { Tipologia } from '../../model/tipologia';
 
 @Injectable({
   providedIn: 'root',

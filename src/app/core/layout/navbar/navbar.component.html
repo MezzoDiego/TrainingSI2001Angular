@@ -9,9 +9,15 @@
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" routerLink="vehicle">Parco Auto</a>
-      <a class="nav-item nav-link" href="#">Profilo Utente</a>
       @if (authService.getUser()?.ruolo === 'Super User') {
-      <a class="nav-item nav-link" href="#">Prenotazioni</a>
+      <a class="nav-item nav-link" routerLink="customer">Gestione Clientela</a>
+      }@else {
+      <a class="nav-item nav-link" routerLink="profile">Profilo Utente</a>
+      }
+      @if (authService.getUser()?.ruolo === 'Super User') {
+      <a class="nav-item nav-link" routerLink="booking">Prenotazioni</a>
+      } @else {
+      <a class="nav-item nav-link" routerLink="booking">Le mie Prenotazioni</a>
       }
     </div>
   </div>

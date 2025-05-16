@@ -1,0 +1,96 @@
+<div class="background-wrapper">
+    <div class="overlay-content">
+        <h1>Gestione Clientela</h1>
+        <p>In questa sezione puoi visualizzare, aggiungere, modificare o eliminare gli account dei tuoi clienti.</p>
+        <div class="mywrapper">
+            <div class="card text-white bg-primary bg-opacity-50">
+                <div class="card-header text-center">
+                    @if (urlKeyword =='create') {
+                    <h5>Inserisci nuovo elemento</h5>
+                    } @else {
+                    <h5>Modifica elemento</h5>
+                    }
+                </div>
+                <div class="card-body" style="width: 50%; margin: 0 auto;">
+                    <form [formGroup]="customerReactive" (ngSubmit)="handleFormRequest()">
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Nome</label>
+                            <input type="text" class="form-control" formControlName="nome"
+                                placeholder="inserisci nome..." />
+                            @if (customerReactive.get('nome')?.touched &&
+                            customerReactive.get('nome')?.hasError('required')) {
+                            <div class="text-danger">Nome
+                                obbligatorio</div>
+                            }
+                        </div>
+
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Cognome</label>
+                            <input type="text" class="form-control" formControlName="cognome"
+                                placeholder="inserisci cognome..." />
+                            @if (customerReactive.get('cognome')?.touched &&
+                            customerReactive.get('cognome')?.hasError('required')) {
+                            <div class="text-danger">Cognome
+                                obbligatorio</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Data Di Nascita</label>
+                            <input type="date" class="form-control" formControlName="dataDiNascita"
+                                placeholder="dd/MM/yyyy" />
+                            @if (customerReactive.get('dataDiNascita')?.touched &&
+                            customerReactive.get('dataDiNascita')?.hasError('required')) {
+                            <div class="text-danger">Data Di Nascita
+                                obbligatoria</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" formControlName="username"
+                                placeholder="inserisci username..." />
+                            @if (customerReactive.get('username')?.touched &&
+                            customerReactive.get('username')?.hasError('required')) {
+                            <div class="text-danger">Username
+                                obbligatorio</div>
+                            }
+                        </div>
+                        @if (urlKeyword === 'create') {
+                        <div class="mb-sm-1">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" formControlName="password"
+                                placeholder="inserisci password..." />
+                            @if (customerReactive.get('password')?.touched &&
+                            customerReactive.get('password')?.hasError('required')) {
+                            <div class="text-danger">Password
+                                obbligatoria</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Conferma Password</label>
+                            <input type="password" class="form-control" formControlName="confermaPassword"
+                                placeholder="conferma password..." />
+                            @if (customerReactive.get('confermaPassword')?.touched &&
+                            customerReactive.get('confermaPassword')?.hasError('required')) {
+                            <div class="text-danger">Conferma Password
+                                obbligatoria</div>
+                            }
+                            @if (customerReactive.hasError('passwordMismatch') && customerReactive.dirty) {
+                            <div class="text-danger">Le password non corrispondono</div>
+                            }
+                        </div>
+                        }
+
+                        <button type="submit" class="btn btn-primary mt-3" [disabled]="customerReactive.invalid">
+                            Submit</button>
+                        <a routerLink="/customer" class="btn btn-secondary mt-3">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

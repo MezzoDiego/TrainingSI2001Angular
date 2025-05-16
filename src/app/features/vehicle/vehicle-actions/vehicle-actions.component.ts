@@ -3,9 +3,7 @@ import {
   computed,
   effect,
   inject,
-  model,
   OnInit,
-  Signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -97,7 +95,6 @@ export class VehicleActionsComponent implements OnInit {
 
   urlKeyword = '';
   errorMessage = '';
-  date: any;
 
   ngOnInit(): void {
     this.urlKeyword = this.router.url.includes('create')

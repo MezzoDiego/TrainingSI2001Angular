@@ -30,7 +30,6 @@ export class VehicleComponent {
   vehicleService = inject(VehicleService);
   vehicleTypeService = inject(VehicleTypeService);
   router = inject(Router);
-  route = inject(ActivatedRoute);
 
   showDialog = false;
   idItemOperation = 0;
