@@ -1,4 +1,10 @@
-<div class="filter-controls row align-items-end mb-4">
+<div class="d-flex filter-controls row align-items-end mb-4">
+  @for (action of tableConfig().actions; track action) {
+  @if (action.type === actionType.NEW_ROW) {
+  <app-my-button style="position: absolute; left: 75%; width: 20%;" [buttonConfig]="action.buttonConfig!"
+    (buttonClick)="handleButtonClick($event, 0)"></app-my-button>
+  }
+  }
   <div class="col-md-4">
     <label for="filterColumn" class="form-label fw-semibold text-primary">
       <i class="fa fa-columns me-1"></i> Colonna da filtrare
@@ -21,92 +27,82 @@
     <input id="filterText" type="text" class="form-control shadow-sm" placeholder="Inserisci filtro"
       [(ngModel)]="filterText" />
   </div>
+
 </div>
 
-  @let filtered = data() | tableFilter:filterText:selectedFilterColumn:sortedColumn:sortDirection;
-  <table class="table table-striped table-bordered">
-    <thead>
-      <tr>
-        @for (header of tableConfig().headers; track header) {
-        <th (click)="sortData(header.key)">
-          {{ header.label }}
-          <i class="fa" [ngClass]="{
+@let filtered = data() | tableFilter:filterText:selectedFilterColumn:sortedColumn:sortDirection;
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      @for (header of tableConfig().headers; track header) {
+      <th style="white-space: nowrap;" (click)="sortData(header.key)">
+        {{ header.label }}
+        <i class="fa" [ngClass]="{
              'fa-sort': !isSortedColumn(header.key!),
              'fa-sort-asc': isSortedColumn(header.key!) && sortDirection === 'asc',
              'fa-sort-desc': isSortedColumn(header.key!) && sortDirection === 'desc'
            }"></i>
-        </th>
-        }
-        <th class="d-flex justify-content-between align-items-center">
-          <span>Actions</span>
-          @for (action of tableConfig().actions; track action) {
-          @if (action.type === actionType.NEW_ROW) {
-          <app-my-button [buttonConfig]="action.buttonConfig!"
-            (buttonClick)="handleButtonClick($event)"></app-my-button>
-          }
-          }
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of filtered
-      | tableFilter:filterText:selectedFilterColumn:sortedColumn:sortDirection
-      | tablePagination:currentPage:tableConfig().pagination?.itemPerPage;
-      track row) {
-      <tr>
-        @for (header of tableConfig().headers; track header) {
-        <td>
-          {{ header.key ? row[header.key] : '' }}
-        </td>
-        }
-        @if (tableConfig().actions) {
-        <td>
-          @for (action of tableConfig().actions; track action) {
-          @if (action.type !== actionType.NEW_ROW) {
-          <app-my-button class="me-2" [buttonConfig]="action.buttonConfig!"
-            (buttonClick)="handleButtonClick($event)"></app-my-button>
-          }
-          }
-        </td>
-        }
-      </tr>
+      </th>
       }
-    </tbody>
-  </table>
-
-  <div class="d-flex align-items-center mb-2">
-    <p class="d-flex align-items-center gap-2 me-3 mb-0">
-      <i class="fa fa-file-alt text-primary"></i>
-      <span class="fw-semibold">Pagina {{ currentPage }}</span>
-    </p>
-
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="itemsPerPageDropdown"
-        data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa fa-list me-1"></i> {{ itemPerPage }} per pagina
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
-        @for (option of tableConfig().pagination?.itemPerPageOptions; track option) {
-        <li>
-          <a class="dropdown-item text-primary" href="#" (click)="onItemsPerPageChange(option)">
-            {{ option }}
-          </a>
-        </li>
+      <th style="white-space: nowrap;" class="d-flex justify-content-center align-items-center">
+        <span>Actions</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of filtered
+    | tableFilter:filterText:selectedFilterColumn:sortedColumn:sortDirection
+    | tablePagination:currentPage:tableConfig().pagination?.itemPerPage;
+    track row) {
+    <tr>
+      @for (header of tableConfig().headers; track header) {
+      <td style="white-space: nowrap;">
+        {{ header.valueGetter ? header.valueGetter(row) : row[header.key!] }}
+      </td>
+      }
+      @if (tableConfig().actions) {
+      <td style="white-space: nowrap;">
+        @for (action of tableConfig().actions; track action) {
+        @if (action.type !== actionType.NEW_ROW) {
+        <app-my-button class="me-2" [buttonConfig]="action.buttonConfig!"
+          (buttonClick)="handleButtonClick($event, row.id)"></app-my-button>
         }
-      </ul>
-    </div>
-  </div>
+        }
+      </td>
+      }
+    </tr>
+    }
+  </tbody>
+</table>
 
-  <nav class="Page navigation example">
-    <ul class="pagination">
-      <li class="page-item"><button class="page-link" (click)="goToPage(currentPage - 1)"
-          [disabled]="currentPage === 1">Prev</button></li>
-      <li class="page-item"><button class="page-link" (click)="goToPage(currentPage + 1)"
-          [disabled]="currentPage * tableConfig().pagination?.itemPerPage! >= filtered.length">Next</button></li>
+<div class="d-flex align-items-center mb-2">
+  <p class="d-flex align-items-center gap-2 me-3 mb-0">
+    <i class="fa fa-file-alt text-primary"></i>
+    <span class="fw-semibold">Pagina {{ currentPage }}</span>
+  </p>
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="itemsPerPageDropdown" data-bs-toggle="dropdown"
+      aria-expanded="false">
+      <i class="fa fa-list me-1"></i> {{ itemPerPage }} per pagina
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
+      @for (option of tableConfig().pagination?.itemPerPageOptions; track option) {
+      <li>
+        <a class="dropdown-item text-primary" routerLink="/vehicle" (click)="onItemsPerPageChange(option)">
+          {{ option }}
+        </a>
+      </li>
+      }
     </ul>
-  </nav>
-@if (childComponentEvent) {
-<div class="alert alert-primary" role="alert">
-  {{childComponentEvent}}
+  </div>
 </div>
-}
+
+<nav class="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><button class="page-link" (click)="goToPage(currentPage - 1)"
+        [disabled]="currentPage === 1">Prev</button></li>
+    <li class="page-item"><button class="page-link" (click)="goToPage(currentPage + 1)"
+        [disabled]="currentPage * tableConfig().pagination?.itemPerPage! >= filtered.length">Next</button></li>
+  </ul>
+</nav>

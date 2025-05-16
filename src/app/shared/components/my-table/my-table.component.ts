@@ -1,6 +1,7 @@
 import {
   Component,
   input,
+  output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyButtonComponent } from '../my-button/my-button.component';
@@ -11,6 +12,7 @@ import {
   MyTableActionEnum,
   MyTableConfig,
 } from './config/my-table-config';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-table',
@@ -21,6 +23,7 @@ import {
     FormsModule,
     TableFilterPipe,
     TablePaginationPipe,
+    RouterLink
   ],
   templateUrl: './my-table.component.html',
   styleUrl: './my-table.component.css',
@@ -28,9 +31,9 @@ import {
 export class MyTableComponent {
   tableConfig = input.required<MyTableConfig>();
   data = input.required<any[]>();
+  operation = output<{ operation: string; id: number }>();
 
   actionType = MyTableActionEnum;
-  childComponentEvent = '';
 
   // Ordinamento
   sortedColumn? = '';
@@ -91,7 +94,7 @@ export class MyTableComponent {
     }
   }
 
-  handleButtonClick(event: string) {
-    this.childComponentEvent = event;
+  handleButtonClick(operation: string, id: number) {
+    this.operation.emit({ operation, id });
   }
 }

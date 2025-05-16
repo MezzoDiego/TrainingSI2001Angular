@@ -7,8 +7,8 @@
     <p>Visualizza tutte le prenotazioni effettuate, aggiorna i dati dei veicoli disponibili e mantieni sempre sotto
         controllo la tua flotta!</p>
     <p class="lead">
-        <app-my-button [buttonConfig]="carsButtonConfig()!" routerLink="welcome"></app-my-button>
-        <app-my-button [buttonConfig]="customerButtonConfig" routerLink="welcome"></app-my-button>
+        <app-my-button [buttonConfig]="carsButtonConfig()!" (click)="navigateTo('vehicle')"></app-my-button>
+        <app-my-button [buttonConfig]="customerButtonConfig()" routerLink="welcome"></app-my-button>
         <app-my-button [buttonConfig]="bookingButtonConfig()!" routerLink="welcome"></app-my-button>
     </p>
 </div>
@@ -21,7 +21,7 @@
     <p>Qui puoi consultare le auto disponibili, prenotare in base alle tue esigenze e seguire lo stato dei tuoi ordini
         in tempo reale.</p>
     <p class="lead">
-        <app-my-button [buttonConfig]="carsButtonConfig()!" routerLink="welcome"></app-my-button>
+        <app-my-button [buttonConfig]="carsButtonConfig()!" routerLink="vehicle"></app-my-button>
         <app-my-button [buttonConfig]="bookingButtonConfig()!" routerLink="welcome"></app-my-button>
     </p>
 </div>

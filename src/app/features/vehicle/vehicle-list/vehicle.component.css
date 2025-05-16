@@ -1,0 +1,26 @@
+.background-wrapper {
+  min-height: 100vh;
+  background-image: url('../../../../assets/rental-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  display: flex;
+  justify-content: center; /* orizzontale */
+  align-items: center;     /* verticale */
+  padding-bottom: 10rem;
+}
+
+.overlay-content {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 80%;
+  text-align: center;
+}
+
+.table-wrapper {
+  overflow-x: auto;  /* permette lo scroll orizzontale */
+  -webkit-overflow-scrolling: touch; /* scroll fluido su iOS */
+  max-width: 100%;   /* per non sforare il contenitore padre */
+}

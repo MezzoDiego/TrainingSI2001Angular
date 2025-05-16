@@ -14,6 +14,6 @@ export class MyButtonComponent {
   buttonClick = output<string>();
 
   onClick() {
-    this.buttonClick.emit("Cliccato pulsante: " + this.buttonConfig().text);
+    this.buttonClick.emit(this.buttonConfig().text!);
   }
 }

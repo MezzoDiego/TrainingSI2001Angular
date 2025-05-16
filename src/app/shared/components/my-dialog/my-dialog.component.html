@@ -1,0 +1,10 @@
+<div class="modal-backdrop show" (click)="closeDialog()"></div>
+
+<div class="custom-modal">
+  <p class="fw-bold mb-3">Sicuro di voler procedere con l'operazione desiderata?</p>
+
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-outline-light" (click)="closeDialog()">Chiudi</button>
+    <button class="btn btn-light text-primary fw-bold" (click)="save()">Salva</button>
+  </div>
+</div>

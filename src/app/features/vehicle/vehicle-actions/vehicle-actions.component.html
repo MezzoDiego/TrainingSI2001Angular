@@ -1,0 +1,170 @@
+<div class="background-wrapper">
+    <div class="overlay-content">
+        <h1>Gestione Parco Auto</h1>
+        <p>In questa sezione puoi visualizzare, aggiungere, modificare o eliminare i veicoli disponibili per il
+            noleggio.
+        </p>
+        <div class="mywrapper">
+            <div class="card text-white bg-primary bg-opacity-50">
+                <div class="card-header text-center">
+                    @if (urlKeyword =='create') {
+                    <h5>Inserisci nuovo elemento</h5>
+                    } @else {
+                    <h5>Modifica elemento</h5>
+                    }
+                </div>
+
+                <div class="card-body" style="width: 50%; margin: 0 auto;">
+                    <form [formGroup]="vehicleReactive" (ngSubmit)="handleFormRequest()">
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Casa Costruttrice</label>
+                            <input type="text" class="form-control" formControlName="casaCostruttrice"
+                                placeholder="inserisci casa costruttrice..." />
+                            @if (vehicleReactive.get('casaCostruttrice')?.touched && vehicleReactive.get('casaCostruttrice')?.hasError('required')) {
+                            <div class="text-danger">Casa Costruttrice
+                                obbligatoria</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Modello</label>
+                            <input type="text" class="form-control" formControlName="modello"
+                                placeholder="inserisci modello..." />
+                            @if (vehicleReactive.get('modello')?.touched && vehicleReactive.get('modello')?.hasError('required')) {
+                            <div class="text-danger">Modello
+                                obbligatorio</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Targa</label>
+                            <input type="text" class="form-control" formControlName="targa"
+                                placeholder="inserisci targa..." />
+                            @if (vehicleReactive.get('targa')?.touched && vehicleReactive.get('targa')?.hasError('required')) {
+                            <div class="text-danger">Casa Costruttrice
+                                obbligatoria</div>
+                            }
+                            @if (vehicleReactive.get('targa')?.hasError('minlength') ||
+                            vehicleReactive.get('targa')?.hasError('maxlength')) {
+                            <div class="text-danger">Targa
+                                non valida</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Numero Telaio</label>
+                            <input type="text" class="form-control" formControlName="numeroTelaio"
+                                placeholder="inserisci numero telaio..." />
+                            @if (vehicleReactive.get('numeroTelaio')?.touched && vehicleReactive.get('numeroTelaio')?.hasError('required')) {
+                            <div class="text-danger">Numero Telaio
+                                obbligatorio</div>
+                            }
+                            @if (vehicleReactive.get('numeroTelaio')?.hasError('minlength') ||
+                            vehicleReactive.get('numeroTelaio')?.hasError('maxlength')) {
+                            <div class="text-danger">Numero Telaio
+                                non valido</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Anno Immatricolazione</label>
+                            <input type="number" class="form-control" formControlName="annoImmatricolazione" />
+                            @if (vehicleReactive.get('annoImmatricolazione')?.touched && vehicleReactive.get('annoImmatricolazione')?.hasError('required')) {
+                            <div class="text-danger">Anno Immatricolazione obbligatorio</div>
+                            }
+
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Cilindrata</label>
+                            <input type="number" class="form-control" formControlName="cilindrata" />
+                            @if (vehicleReactive.get('cilindrata')?.touched && vehicleReactive.get('cilindrata')?.hasError('required')) {
+                            <div class="text-danger">Cilindrata obbligatoria</div>
+                            }
+
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Potenza (CV)</label>
+                            <input type="number" class="form-control" formControlName="potenza" />
+                            @if (vehicleReactive.get('potenza')?.touched && vehicleReactive.get('potenza')?.hasError('required')) {
+                            <div class="text-danger">Potenza obbligatoria</div>
+                            }
+
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Classe Emissioni</label>
+                            <input type="text" class="form-control" formControlName="emissioni"
+                                placeholder="inserisci emissioni..." />
+                            @if (vehicleReactive.get('emissioni')?.touched && vehicleReactive.get('emissioni')?.hasError('required')) {
+                            <div class="text-danger">Emissioni
+                                obbligatorie</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Kilometraggio</label>
+                            <input type="text" class="form-control" formControlName="kilometraggio"
+                                placeholder="inserisci kilometraggio..." />
+                            @if (vehicleReactive.get('kilometraggio')?.touched && vehicleReactive.get('kilometraggio')?.hasError('required')) {
+                            <div class="text-danger">Kilometraggio
+                                obbligatorio</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Alimentazione</label>
+                            <input type="text" class="form-control" formControlName="alimentazione"
+                                placeholder="inserisci alimentazione..." />
+                            @if (vehicleReactive.get('alimentazione')?.touched && vehicleReactive.get('alimentazione')?.hasError('required')) {
+                            <div class="text-danger">Alimentazione
+                                obbligatoria</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Consumi Urbano (l/km)</label>
+                            <input type="text" class="form-control" formControlName="consumoMedioCarburanteUrbano"
+                                placeholder="inserisci consumi in citta'..." />
+                            @if (vehicleReactive.get('consumoMedioCarburanteUrbano')?.touched && vehicleReactive.get('consumoMedioCarburanteUrbano')?.hasError('required')) {
+                            <div class="text-danger">Consumi Urbano
+                                obbligatorio</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Consumi Extraurbano (l/km)</label>
+                            <input type="text" class="form-control" formControlName="consumoMedioCarburanteExtraurbano"
+                                placeholder="inserisci consumi fuori citta'..." />
+                            @if (vehicleReactive.get('consumoMedioCarburanteExtraurbano')?.touched && vehicleReactive.get('consumoMedioCarburanteExtraurbano')?.hasError('required')) {
+                            <div class="text-danger">Consumi Extraurbano
+                                obbligatorio</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Tipologia</label>
+                            <select class="form-select" formControlName="tipologia" [compareWith]="compareTipologia">
+                                <option value="">Seleziona</option>
+                                @for (item of tipologie!(); track item.id) {
+                        <option [ngValue]="item">{{item.descrizione}}</option>
+                        }
+
+                            </select>
+                            @if (vehicleReactive.get('tipologia')?.touched && vehicleReactive.get('tipologia')?.hasError('required')) {
+                            <div class="text-danger">Tipologia obbligatoria</div>
+                            }
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary mt-3" [disabled]="vehicleReactive.invalid">
+                            Submit</button>
+                        <a routerLink="/vehicle" class="btn btn-secondary mt-3">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

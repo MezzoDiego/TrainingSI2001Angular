@@ -5,10 +5,11 @@ import {
   inject,
   OnChanges,
   OnInit,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyButtonComponent } from '../../shared/components/my-button/my-button.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { MyButtonConfig } from '../../shared/components/my-button/config/my-button-config';
 
@@ -20,6 +21,7 @@ import { MyButtonConfig } from '../../shared/components/my-button/config/my-butt
 })
 export class WelcomeComponent {
   authService = inject(AuthService);
+  router = inject(Router);
 
   carsButtonConfig = computed<MyButtonConfig>(() => {
     const ruolo = this.authService.getUser()?.ruolo ?? '';
@@ -42,9 +44,14 @@ export class WelcomeComponent {
       icon: 'fa fa-calendar',
     };
   });
-  customerButtonConfig: MyButtonConfig = {
+
+  customerButtonConfig = signal<MyButtonConfig>({
     customCssClass: 'btn btn-warning btn-lg active',
     text: 'Gestisci Clientela',
     icon: 'fa fa-users',
-  };
+  });
+
+  navigateTo(route: String) {
+    this.router.navigate([route]);
+  }
 }

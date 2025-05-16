@@ -11,6 +11,7 @@ export class MyTableConfig {
 export class MyHeaders {
   key?: string;
   label?: string;
+  valueGetter?: any;
 }
 
 export class MyOrder {
@@ -33,5 +34,5 @@ export class MyAction {
 }
 
 export enum MyTableActionEnum {
-  NEW_ROW, EDIT, DELETE
+  NEW_ROW = 'Add', EDIT= 'Edit', DELETE = 'Delete'
 }

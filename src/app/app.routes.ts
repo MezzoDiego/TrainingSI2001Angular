@@ -11,9 +11,33 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'vehicle',
+    loadComponent: () =>
+      import('./features/vehicle/vehicle-list/vehicle.component').then(
+        (c) => c.VehicleComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'vehicle/create',
+    loadComponent: () =>
+      import(
+        './features/vehicle/vehicle-actions/vehicle-actions.component'
+      ).then((c) => c.VehicleActionsComponent),
+    canActivate: [authGuard],
+  },
+    {
+    path: 'vehicle/update/:id',
+    loadComponent: () =>
+      import(
+        './features/vehicle/vehicle-actions/vehicle-actions.component'
+      ).then((c) => c.VehicleActionsComponent),
+    canActivate: [authGuard],
+  },
+  {
     path: 'login',
     loadComponent: () =>
-      import('./core/auth/login/login.component').then((c) => c.LoginComponent)
+      import('./core/auth/login/login.component').then((c) => c.LoginComponent),
   },
 
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
