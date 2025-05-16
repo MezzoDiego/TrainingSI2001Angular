@@ -11,9 +11,13 @@ import { MyButtonConfig } from './config/my-button-config';
 })
 export class MyButtonComponent {
   buttonConfig = input.required<MyButtonConfig>();
-  buttonClick = output<string>();
+  area = input<string>();
+  buttonClick = output<{text: string, area: string}>();
 
   onClick() {
-    this.buttonClick.emit(this.buttonConfig().text!);
+    this.buttonClick.emit({
+      text: this.buttonConfig().text!,
+      area: this.area()!
+    });
   }
 }

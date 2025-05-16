@@ -1,5 +1,6 @@
 import {
   Component,
+  inject,
   input,
   output,
 } from '@angular/core';
@@ -12,7 +13,7 @@ import {
   MyTableActionEnum,
   MyTableConfig,
 } from './config/my-table-config';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-table',
@@ -29,16 +30,18 @@ import { RouterLink } from '@angular/router';
   styleUrl: './my-table.component.css',
 })
 export class MyTableComponent {
+  router = inject(Router);
   tableConfig = input.required<MyTableConfig>();
   data = input.required<any[]>();
-  operation = output<{ operation: string; id: number }>();
+  operation = output<{ operation: {text: string, area: string}; id: number }>();
+  area = input.required<string>();
 
   actionType = MyTableActionEnum;
 
   // Ordinamento
   sortedColumn? = '';
   sortDirection: 'asc' | 'desc' = 'asc';
-  // Filtraggio
+  // Filtraggio 
   selectedFilterColumn = '';
   filterText = '';
   //Paginazione
@@ -94,7 +97,7 @@ export class MyTableComponent {
     }
   }
 
-  handleButtonClick(operation: string, id: number) {
+  handleButtonClick(operation: {text: string, area: string}, id: number) {
     this.operation.emit({ operation, id });
   }
 }

@@ -53,4 +53,54 @@ export class VehicleTypeService {
             },
           });
       }
+
+        addType(newType: Tipologia) {
+          return this.http
+            .post<Tipologia>(
+              `${this.apiServerUrl}/api/tipologia`,
+              newType,
+              this.httpOptions
+            )
+            .subscribe({
+              next: (addedType) => {
+                this._types.set([...this._types(), addedType]);
+              },
+              error: (error) => console.error('Errore aggiunta tipologia:', error),
+            });
+        }
+      
+        updateType(updatedType: Tipologia) {
+          return this.http
+            .put<Tipologia>(
+              `${this.apiServerUrl}/api/tipologia`,
+              updatedType,
+              this.httpOptions
+            )
+            .subscribe({
+              next: (type) => {
+                const updatedList = this._types().map((t) =>
+                  t.id === type.id ? type : t
+                );
+                this._types.set(updatedList);
+              },
+              error: (error) => console.error('Errore aggiornamento tipologia:', error),
+            });
+        }
+      
+        deleteType(typeId: number) {
+          return this.http
+            .delete<void>(
+              `${this.apiServerUrl}/api/tipologia/${typeId}`,
+              this.httpOptions
+            )
+            .subscribe({
+              next: () => {
+                const filteredList = this._types().filter(
+                  (t) => t.id !== typeId
+                );
+                this._types.set(filteredList);
+              },
+              error: (error) => console.error('Errore eliminazione tipologia:', error),
+            });
+        }
 }

@@ -1,7 +1,7 @@
 <div class="d-flex filter-controls row align-items-end mb-4">
   @for (action of tableConfig().actions; track action) {
   @if (action.type === actionType.NEW_ROW) {
-  <app-my-button style="position: absolute; left: 75%; width: 20%;" [buttonConfig]="action.buttonConfig!"
+  <app-my-button style="position: absolute; left: 75%; width: 20%;" [buttonConfig]="action.buttonConfig!" [area]="area()"
     (buttonClick)="handleButtonClick($event, 0)"></app-my-button>
   }
   }
@@ -64,7 +64,7 @@
       <td style="white-space: nowrap;">
         @for (action of tableConfig().actions; track action) {
         @if (action.type !== actionType.NEW_ROW) {
-        <app-my-button class="me-2" [buttonConfig]="action.buttonConfig!"
+        <app-my-button class="me-2" [buttonConfig]="action.buttonConfig!" [area]="area()"
           (buttonClick)="handleButtonClick($event, row.id)"></app-my-button>
         }
         }
@@ -89,7 +89,7 @@
     <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
       @for (option of tableConfig().pagination?.itemPerPageOptions; track option) {
       <li>
-        <a class="dropdown-item text-primary" routerLink="/vehicle" (click)="onItemsPerPageChange(option)">
+        <a class="dropdown-item text-primary" routerLink='/{{area()}}' (click)="onItemsPerPageChange(option)">
           {{ option }}
         </a>
       </li>

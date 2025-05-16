@@ -6,8 +6,8 @@
   background-repeat: no-repeat;
   
   display: flex;
-  justify-content: center; /* orizzontale */
-  align-items: center;     /* verticale */
+  justify-content: center;
+  align-items: center;     
   padding-bottom: 10rem;
 }
 
@@ -20,7 +20,13 @@
 }
 
 .table-wrapper {
-  overflow-x: auto;  /* permette lo scroll orizzontale */
-  -webkit-overflow-scrolling: touch; /* scroll fluido su iOS */
-  max-width: 100%;   /* per non sforare il contenitore padre */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; 
+  max-width: 100%; 
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-start; 
+  margin-bottom: 1rem;         
 }

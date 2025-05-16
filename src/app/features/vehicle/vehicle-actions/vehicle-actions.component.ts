@@ -32,16 +32,25 @@ export class VehicleActionsComponent implements OnInit {
   fb = inject(FormBuilder);
   vehicleService = inject(VehicleService);
   vehicleTypeService = inject(VehicleTypeService);
+
   vehicle = computed(() => this.vehicleService.selectedVehicle());
-  tipologie = computed(() => this.vehicleTypeService.types());
+  type = computed(() => this.vehicleTypeService.selectedType());
+  types = computed(() => this.vehicleTypeService.types());
 
   vehicleEffect = effect(() => {
-    const v = this.vehicle();
-    if (v && !this.router.url.includes('create')) {
+    const computedVehicle = this.vehicle();
+    if (computedVehicle && !this.router.url.includes('create') && !this.router.url.includes('types')) {
       this.vehicleReactive.patchValue({
-        ...v,
-        tipologia: v.tipologia,
+        ...computedVehicle,
+        tipologia: computedVehicle.tipologia,
       });
+    }
+  });
+
+    typeEffect = effect(() => {
+    const computedType = this.type();
+    if (computedType && !this.router.url.includes('create') && this.router.url.includes('types')) {
+      this.typeReactive.patchValue(computedType);
     }
   });
 
@@ -80,6 +89,12 @@ export class VehicleActionsComponent implements OnInit {
     tipologia: this.fb.nonNullable.control(null, [Validators.required]),
   });
 
+  typeReactive: FormGroup = this.fb.group({
+    id: this.fb.control(null),
+    descrizione: this.fb.nonNullable.control('', [Validators.required]),
+  });
+
+
   urlKeyword = '';
   errorMessage = '';
   date: any;
@@ -89,14 +104,25 @@ export class VehicleActionsComponent implements OnInit {
       ? 'create'
       : this.router.url.includes('update')
       ? 'update'
-      : 'view';
+      : '';
     let id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    if (id) {
+    if (id && !this.router.url.includes('types')) {
       this.vehicleService.findVehicleById(id);
+    } else if (id && this.router.url.includes('types')) {
+      this.vehicleTypeService.findTypeById(id);
     }
   }
 
   handleFormRequest() {
+    if(this.router.url.includes('types')) {
+ if (this.urlKeyword === 'create') {
+      this.vehicleTypeService.addType(this.typeReactive.value);
+      this.router.navigate(['/vehicle/types']);
+    } else if (this.urlKeyword === 'update') {
+      this.vehicleTypeService.updateType(this.typeReactive.value);
+      this.router.navigate(['/vehicle/types']);
+    }
+    } else {
     if (this.urlKeyword === 'create') {
       this.vehicleService.addVehicle(this.vehicleReactive.value);
       this.router.navigate(['/vehicle']);
@@ -104,6 +130,7 @@ export class VehicleActionsComponent implements OnInit {
       this.vehicleService.updateVehicle(this.vehicleReactive.value);
       this.router.navigate(['/vehicle']);
     }
+  }
   }
 
   compareTipologia = (a: Tipologia, b: Tipologia): boolean => {
