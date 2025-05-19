@@ -1,5 +1,5 @@
 @if (showDialog) {
-<app-my-dialog (closedDialog)="closeDialog()" (operationConfirmed)="handleBooking()" />
+<app-my-dialog (closedDialog)="closeDialog()" (operationConfirmed)="authService.getUser()?.ruolo === 'Super User' ? handleBooking() : confirmDelete()" />
 }
 <div class="background-wrapper">
     <div class="overlay-content">

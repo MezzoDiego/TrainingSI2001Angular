@@ -48,9 +48,19 @@ export class BookingListComponent implements OnInit {
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
+
     if (idParam) {
       const idUser = Number(idParam);
       this.bookingService.getAllBookingsByUser(idUser);
+    } else if (this.authService.getUser()?.ruolo === 'Customer') {
+      this.authService.getUserId().subscribe({
+        next: (idUser) => {
+          this.bookingService.getAllBookingsByUser(Number(idUser));
+        },
+        error: (err) => {
+          console.error('Errore nel recupero ID utente:', err);
+        },
+      });
     } else {
       this.bookingService.getAllBookings();
     }
@@ -62,84 +72,218 @@ export class BookingListComponent implements OnInit {
     icon: 'fa fa-arrow-left',
   });
 
-  tableConfig = signal<MyTableConfig>({
-    headers: [
-      { key: 'id', label: 'ID' },
-      {
-        key: 'dataInizio',
-        label: 'DATA INIZIO',
-        valueGetter: (item: Prenotazione) =>
-          this.formatDateTime(item.dataInizio!),
-      },
-      {
-        key: 'dataFine',
-        label: 'DATA FINE',
-        valueGetter: (item: Prenotazione) =>
-          this.formatDateTime(item.dataInizio!),
-      },
-      {
-        key: 'veicolo',
-        label: 'VEICOLO',
-        valueGetter: (item: any) =>
-          item.veicolo?.casaCostruttrice + ' ' + item.veicolo?.modello + ' - ID: ' + item.veicolo?.id || '',
-      },
-      {
-        key: 'utente',
-        label: 'UTENTE',
-        valueGetter: (item: any) => item.utente?.username + ' - ID: ' + item.utente?.id || '',
-      },
-    ],
-    order: {
-      defaultColumn: 'id',
-      orderType: 'asc',
-    },
-    search: {
-      columns: ['dataInizio', 'dataFine', 'veicolo', 'utente'],
-    },
-    pagination: {
-      itemPerPage: 5,
-      itemPerPageOptions: [3, 5, 10, 20],
-    },
-    actions: [],
-    rowActionsGetter: (row: Prenotazione) => {
-      if (row.flagApprovazione === null || row.flagApprovazione === undefined) {
-        return [
-          {
-            type: MyTableActionEnum.OPERATION,
-            buttonConfig: {
-              customCssClass: 'btn btn-success',
-              text: 'Approva',
-              icon: 'fa fa-check',
+  tableConfig =
+    this.authService.getUser()?.ruolo === 'Super User'
+      ? signal<MyTableConfig>({
+          headers: [
+            { key: 'id', label: 'ID' },
+            {
+              key: 'dataInizio',
+              label: 'DATA INIZIO',
+              valueGetter: (item: Prenotazione) =>
+                this.formatDateTime(item.dataInizio!),
             },
-          },
-          {
-            type: MyTableActionEnum.OPERATION,
-            buttonConfig: {
-              customCssClass: 'btn btn-danger',
-              text: 'Rifiuta',
-              icon: 'fa fa-times',
+            {
+              key: 'dataFine',
+              label: 'DATA FINE',
+              valueGetter: (item: Prenotazione) =>
+                this.formatDateTime(item.dataInizio!),
             },
-          },
-        ];
-      } else {
-        return [
-          {
-            type: MyTableActionEnum.INFO,
-            buttonConfig: {
-              customCssClass: row.flagApprovazione
-                ? 'btn btn-success disabled'
-                : 'btn btn-danger disabled',
-              text: row.flagApprovazione ? 'Approvata' : 'Rifiutata',
-              icon: row.flagApprovazione ? 'fa fa-check' : 'fa fa-times',
+            {
+              key: 'veicolo',
+              label: 'VEICOLO',
+              valueGetter: (item: any) =>
+                item.veicolo?.casaCostruttrice +
+                  ' ' +
+                  item.veicolo?.modello +
+                  ' - ID: ' +
+                  item.veicolo?.id || '',
             },
+            {
+              key: 'utente',
+              label: 'UTENTE',
+              valueGetter: (item: any) =>
+                item.utente?.username + ' - ID: ' + item.utente?.id || '',
+            },
+          ],
+          order: {
+            defaultColumn: 'id',
+            orderType: 'asc',
           },
-        ];
-      }
+          search: {
+            columns: ['dataInizio', 'dataFine', 'veicolo', 'utente'],
+          },
+          pagination: {
+            itemPerPage: 5,
+            itemPerPageOptions: [3, 5, 10, 20],
+          },
+          actions: [],
+          showActionsCol: true,
+          rowActionsGetter: (row: Prenotazione) => {
+            if (
+              row.flagApprovazione === null ||
+              row.flagApprovazione === undefined
+            ) {
+              return [
+                {
+                  type: MyTableActionEnum.OPERATION,
+                  buttonConfig: {
+                    customCssClass: 'btn btn-success',
+                    text: 'Approva',
+                    icon: 'fa fa-check',
+                  },
+                },
+                {
+                  type: MyTableActionEnum.OPERATION,
+                  buttonConfig: {
+                    customCssClass: 'btn btn-danger',
+                    text: 'Rifiuta',
+                    icon: 'fa fa-times',
+                  },
+                },
+              ];
+            } else {
+              return [
+                {
+                  type: MyTableActionEnum.INFO,
+                  buttonConfig: {
+                    customCssClass: row.flagApprovazione
+                      ? 'btn btn-success disabled'
+                      : 'btn btn-danger disabled',
+                    text: row.flagApprovazione ? 'Approvata' : 'Rifiutata',
+                    icon: row.flagApprovazione ? 'fa fa-check' : 'fa fa-times',
+                  },
+                },
+              ];
+            }
+          },
+        })
+      : signal<MyTableConfig>({
+          headers: [
+            { key: 'id', label: 'ID' },
+            {
+              key: 'dataInizio',
+              label: 'DATA INIZIO',
+              valueGetter: (item: Prenotazione) =>
+                this.formatDateTime(item.dataInizio!),
+            },
+            {
+              key: 'dataFine',
+              label: 'DATA FINE',
+              valueGetter: (item: Prenotazione) =>
+                this.formatDateTime(item.dataFine!),
+            },
+            {
+              key: 'veicolo',
+              label: 'VEICOLO',
+              valueGetter: (item: any) =>
+                item.veicolo?.casaCostruttrice +
+                  ' ' +
+                  item.veicolo?.modello +
+                  ' - ID: ' +
+                  item.veicolo?.id || '',
+            },
+          ],
+          order: {
+            defaultColumn: 'id',
+            orderType: 'asc',
+          },
+          search: {
+            columns: ['dataInizio', 'dataFine', 'veicolo'],
+          },
+          pagination: {
+            itemPerPage: 5,
+            itemPerPageOptions: [3, 5, 10, 20],
+          },
+          actions: [
+            {
+              type: MyTableActionEnum.NEW_ROW,
+              buttonConfig: {
+                customCssClass: 'btn btn-primary',
+                text: 'Add',
+                icon: 'fa fa-plus',
+              },
+            },
+          ],
+          showActionsCol: true,
+        rowActionsGetter: (row: Prenotazione) => {
+  // Caso: prenotazione già approvata o rifiutata → bottone info approvazione
+  if (row.flagApprovazione !== null && row.flagApprovazione !== undefined) {
+    return [
+      {
+        type: MyTableActionEnum.INFO,
+        buttonConfig: {
+          customCssClass: row.flagApprovazione
+            ? 'btn btn-success disabled'
+            : 'btn btn-danger disabled',
+          text: row.flagApprovazione ? 'Approvata' : 'Rifiutata',
+          icon: row.flagApprovazione ? 'fa fa-check' : 'fa fa-times',
+        },
+      },
+    ];
+  }
+
+  // Caso: flag approvazione nullo e dataInizio presente
+  if (row.dataInizio) {
+    const dataInizio = new Date(row.dataInizio);
+    const now = new Date();
+    const limiteModifica = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000); // +48h
+
+    if (dataInizio > limiteModifica) {
+      // Modifica consentita
+      return [
+        {
+          type: MyTableActionEnum.EDIT,
+          buttonConfig: {
+            customCssClass: 'btn btn-warning',
+            text: 'Edit',
+            icon: 'fa fa-edit',
+          },
+        },
+        {
+          type: MyTableActionEnum.DELETE,
+          buttonConfig: {
+            customCssClass: 'btn btn-danger',
+            text: 'Delete',
+            icon: 'fa fa-trash',
+          },
+        },
+      ];
+    } else {
+      // Tempo scaduto
+      return [
+        {
+          type: MyTableActionEnum.INFO,
+          buttonConfig: {
+            customCssClass: 'btn btn-secondary disabled',
+            text: 'Tempo per la modifica scaduto!',
+            icon: 'fa fa-hourglass-end',
+          },
+        },
+      ];
+    }
+  }
+
+  // Caso fallback (dataInizio assente)
+  return [
+    {
+      type: MyTableActionEnum.INFO,
+      buttonConfig: {
+        customCssClass: 'btn btn-secondary disabled',
+        text: 'Dati incompleti',
+        icon: 'fa fa-exclamation-circle',
+      },
     },
-  });
+  ];
+}
+});
+
 
   data = computed<Prenotazione[]>(() => {
-    if (this.route.snapshot.paramMap.get('id')) {
+    if (
+      this.route.snapshot.paramMap.get('id') ||
+      this.authService.getUser()?.ruolo === 'Customer'
+    ) {
       return this.bookingService.userBookings();
     } else {
       return this.bookingService.bookings();
@@ -155,16 +299,16 @@ export class BookingListComponent implements OnInit {
     id: number;
   }) {
     switch (event.operation.text) {
-      // case MyTableActionEnum.NEW_ROW.toString(): //ROBA DA CUSTOMER
-      //   this.router.navigate([event.operation.area, 'create']);
-      //   break;
-      // case MyTableActionEnum.EDIT.toString():
-      //   this.router.navigate([event.operation.area, 'update', event.id]);
-      //   break;
-      // case MyTableActionEnum.DELETE.toString():
-      // this.showDialog = true;
-      // this.idItemOperation = event.id;
-      //   break;
+      case MyTableActionEnum.NEW_ROW.toString():
+        this.router.navigate([event.operation.area, 'create']);
+        break;
+      case MyTableActionEnum.EDIT.toString():
+        this.router.navigate([event.operation.area, 'update', event.id]);
+        break;
+      case MyTableActionEnum.DELETE.toString():
+        this.showDialog = true;
+        this.idItemOperation = event.id;
+        break;
       case 'Approva':
       case 'Rifiuta':
         this.showDialog = true;
@@ -180,6 +324,11 @@ export class BookingListComponent implements OnInit {
 
   handleBooking() {
     this.bookingService.handleBooking(this.idItemOperation, this.flagOperation);
+    this.showDialog = false;
+  }
+
+  confirmDelete() {
+    this.bookingService.deleteBooking(this.idItemOperation);
     this.showDialog = false;
   }
 

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Prenotazione } from '../../model/prenotazione';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ import { Prenotazione } from '../../model/prenotazione';
 export class BookingService {
   private apiServerUrl = environment.apiBaseUrl;
   private http = inject(HttpClient);
+  private router = inject(Router);
 
   private _selectedBooking: WritableSignal<Prenotazione | undefined> = signal<
     Prenotazione | undefined
@@ -89,6 +91,7 @@ export class BookingService {
       .subscribe({
         next: (addedBooking) => {
           this._bookings.set([...this._bookings(), addedBooking]);
+          this.router.navigate(['/booking']);
         },
         error: (error) => console.error('Errore aggiunta prenotazione:', error),
       });
@@ -107,13 +110,14 @@ export class BookingService {
             b.id === booking.id ? booking : b
           );
           this._bookings.set(updatedList);
+          this.router.navigate(['/booking']);
         },
         error: (error) =>
           console.error('Errore aggiornamento prenotazione:', error),
       });
   }
 
-  deleteUser(bookingId: number) {
+  deleteBooking(bookingId: number) {
     return this.http
       .delete<void>(
         `${this.apiServerUrl}/api/prenotazione/${bookingId}`,
@@ -121,10 +125,15 @@ export class BookingService {
       )
       .subscribe({
         next: () => {
-          const filteredList = this._bookings().filter(
+          const updatedBookings = this._bookings().filter(
             (b) => b.id !== bookingId
           );
-          this._bookings.set(filteredList);
+          this._bookings.set(updatedBookings);
+
+          const updatedUserBookings = this._userBookings().filter(
+            (b) => b.id !== bookingId
+          );
+          this._userBookings.set(updatedUserBookings);
         },
         error: (error) =>
           console.error('Errore eliminazione prenotazione:', error),

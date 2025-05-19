@@ -1,0 +1,63 @@
+<div class="background-wrapper">
+    <div class="overlay-content">
+        <h1>Gestione Prenotazione</h1>
+        <p>Qui puoi gestire la tua prenotazione.</p>
+        <div class="mywrapper">
+            <div class="card text-white bg-primary bg-opacity-50">
+                <div class="card-header text-center">
+                    @if (urlKeyword =='create') {
+                    <h5>Inserisci nuovo elemento</h5>
+                    } @else {
+                    <h5>Modifica elemento</h5>
+                    }
+                </div>
+                <div class="card-body" style="width: 50%; margin: 0 auto;">
+                    <form [formGroup]="bookingReactive" (ngSubmit)="handleFormRequest()">
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Data Inizio</label>
+                            <input type="datetime-local" class="form-control" formControlName="dataInizio"
+                                placeholder="dd/MM/yyyy" [min]="minDataInizio"/>
+                            @if (bookingReactive.get('dataInizio')?.touched &&
+                            bookingReactive.get('dataInizio')?.hasError('required')) {
+                            <div class="text-danger">Data Inizio
+                                obbligatoria</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Data Fine</label>
+                            <input type="datetime-local" class="form-control" formControlName="dataFine"
+                                placeholder="dd/MM/yyyy" [min]="minDataFine"/>
+                            @if (bookingReactive.get('dataFine')?.touched &&
+                            bookingReactive.get('dataFine')?.hasError('required')) {
+                            <div class="text-danger">Data Fine
+                                obbligatoria</div>
+                            }
+                        </div>
+
+                        <div class="mb-sm-1">
+                            <label class="form-label">Veicolo</label>
+                            <select class="form-select" formControlName="veicolo" [compareWith]="compareVeicolo">
+                                <option value="">Seleziona</option>
+                                @for (item of vehicles!(); track item.id) {
+                                <option [ngValue]="item">{{item.casaCostruttrice + ' ' + item.modello + ' - ' + item.targa}}</option>
+                                }
+
+                            </select>
+                            @if (bookingReactive.get('veicolo')?.touched &&
+                            bookingReactive.get('veicolo')?.hasError('required')) {
+                            <div class="text-danger">Veicolo obbligatorio</div>
+                            }
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary mt-3" [disabled]="bookingReactive.invalid">
+                            Submit</button>
+                        <a routerLink="/booking" class="btn btn-secondary mt-3">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

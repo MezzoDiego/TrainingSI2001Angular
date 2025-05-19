@@ -77,6 +77,7 @@ export class CustomerListComponent {
         },
       },
     ],
+    showActionsCol: true
   });
 
   data = computed<Utente[]>(() => {

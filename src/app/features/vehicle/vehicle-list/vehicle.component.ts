@@ -87,6 +87,7 @@ export class VehicleComponent {
             },
           },
         ],
+        showActionsCol: true
       })
     : signal<MyTableConfig>({
         headers: [
@@ -141,8 +142,7 @@ export class VehicleComponent {
           itemPerPageOptions: [3, 5, 10, 20],
         },
         actions:
-          this.authService.getUser()?.ruolo === 'Super User'
-            ? [
+             [
                 {
                   type: MyTableActionEnum.NEW_ROW,
                   buttonConfig: {
@@ -167,8 +167,8 @@ export class VehicleComponent {
                     icon: 'fa fa-trash',
                   },
                 },
-              ]
-            : [],
+              ],
+              showActionsCol: this.authService.getUser()?.ruolo == 'Super User' ? true : false
       });
 
   data = this.router.url.includes('types')

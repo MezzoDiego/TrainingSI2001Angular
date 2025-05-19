@@ -7,6 +7,7 @@ export class MyTableConfig {
   pagination?: MyPagination;
   actions?: MyAction[];
   rowActionsGetter?: (row: any) => MyAction[];
+  showActionsCol? : boolean;
 }
 
 export class MyHeaders {
