@@ -34,7 +34,7 @@ export class VehicleService {
 
   getAllVehicles() {
     this.http
-      .get<Veicolo[]>(`${this.apiServerUrl}/api/veicolo`, this.httpOptions)
+      .get<Veicolo[]>(`${this.apiServerUrl}/api/veicolo/listAll`, this.httpOptions)
       .subscribe({
         next: (data) => this._vehicles.set(data),
         error: (error) => {

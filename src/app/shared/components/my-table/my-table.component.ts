@@ -15,6 +15,7 @@ import {
   MyTableConfig,
 } from './config/my-table-config';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-my-table',
@@ -36,6 +37,8 @@ export class MyTableComponent {
   data = input.required<any[]>();
   operation = output<{ operation: {text: string, area: string}; id: number }>();
   area = input.required<string>();
+
+  authService = inject(AuthService);
 
   actionType = MyTableActionEnum;
 

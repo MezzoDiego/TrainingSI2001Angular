@@ -1,8 +1,8 @@
 <div class="d-flex filter-controls row align-items-end mb-4">
   @for (action of tableConfig().actions; track action) {
   @if (action.type === actionType.NEW_ROW) {
-  <app-my-button style="position: absolute; left: 75%; width: 20%;" [buttonConfig]="action.buttonConfig!" [area]="area()"
-    (buttonClick)="handleButtonClick($event, 0)"></app-my-button>
+  <app-my-button style="position: absolute; left: 75%; width: 20%;" [buttonConfig]="action.buttonConfig!"
+    [area]="area()" (buttonClick)="handleButtonClick($event, 0)"></app-my-button>
   }
   }
   <div class="col-md-4">
@@ -44,9 +44,11 @@
            }"></i>
       </th>
       }
+      @if (authService.getUser()?.ruolo === 'Super User') {
       <th style="white-space: nowrap;" class="d-flex justify-content-center align-items-center">
         <span>Actions</span>
       </th>
+      }
     </tr>
   </thead>
   <tbody>
@@ -60,7 +62,7 @@
         {{ header.valueGetter ? header.valueGetter(row) : row[header.key!] }}
       </td>
       }
-      @if (tableConfig().actions) {
+      @if (tableConfig().actions && authService.getUser()?.ruolo === 'Super User') {
       <td style="white-space: nowrap;">
         @for (action of getActionsForRow(row); track action) {
         @if (action.type !== actionType.NEW_ROW) {

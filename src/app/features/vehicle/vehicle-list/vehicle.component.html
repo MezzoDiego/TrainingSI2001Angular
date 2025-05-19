@@ -1,5 +1,5 @@
-@if (showDialog) {
-  <app-my-dialog (closedDialog)="closeDialog()" (operationConfirmed)="confirmDelete()" />
+@if (showDialog && authService.getUser()?.ruolo === 'Super User') {
+<app-my-dialog (closedDialog)="closeDialog()" (operationConfirmed)="confirmDelete()" />
 }
 <div class="background-wrapper">
   <div class="overlay-content">
@@ -7,16 +7,19 @@
     <h1>Gestione Tipologie</h1>
     <p>In questa sezione puoi visualizzare, aggiungere, modificare o eliminare le tipologie dei veicoli.
     </p>
-  } @else {
-        <h1>Gestione Parco Auto</h1>
+    } @else {
+    <h1>Gestione Parco Auto</h1>
     <p>In questa sezione puoi visualizzare, aggiungere, modificare o eliminare i veicoli disponibili per il noleggio.
     </p>
-  }
+    }
     <div class="table-wrapper">
+      @if (authService.getUser()?.ruolo === 'Super User') {
       <div class="button-wrapper">
-      <app-my-button [buttonConfig]="buttonConfig()" [area]="area()" (click)="goToOwnCRUDPage()"></app-my-button>
+        <app-my-button [buttonConfig]="buttonConfig()" [area]="area()" (click)="goToOwnCRUDPage()"></app-my-button>
       </div>
-      <app-my-table [tableConfig]="tableConfig()" [data]="data()" [area]="area()" (operation)="handleOperation($event)"></app-my-table>
+      }
+      <app-my-table [tableConfig]="tableConfig()" [data]="data()" [area]="area()"
+        (operation)="handleOperation($event)"></app-my-table>
     </div>
   </div>
 </div>

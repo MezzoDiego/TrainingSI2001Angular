@@ -13,6 +13,7 @@ import { MyButtonConfig } from '../../../shared/components/my-button/config/my-b
 import { MyButtonComponent } from '../../../shared/components/my-button/my-button.component';
 import { VehicleTypeService } from '../vehicle-type.service';
 import { Tipologia } from '../../../model/tipologia';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-vehicle',
@@ -30,6 +31,7 @@ export class VehicleComponent {
   vehicleService = inject(VehicleService);
   vehicleTypeService = inject(VehicleTypeService);
   router = inject(Router);
+  authService = inject(AuthService);
 
   showDialog = false;
   idItemOperation = 0;
@@ -138,32 +140,35 @@ export class VehicleComponent {
           itemPerPage: 5,
           itemPerPageOptions: [3, 5, 10, 20],
         },
-        actions: [
-          {
-            type: MyTableActionEnum.NEW_ROW,
-            buttonConfig: {
-              customCssClass: 'btn btn-primary',
-              text: 'Add',
-              icon: 'fa fa-plus',
-            },
-          },
-          {
-            type: MyTableActionEnum.EDIT,
-            buttonConfig: {
-              customCssClass: 'btn btn-warning',
-              text: 'Edit',
-              icon: 'fa fa-edit',
-            },
-          },
-          {
-            type: MyTableActionEnum.DELETE,
-            buttonConfig: {
-              customCssClass: 'btn btn-danger',
-              text: 'Delete',
-              icon: 'fa fa-trash',
-            },
-          },
-        ],
+        actions:
+          this.authService.getUser()?.ruolo === 'Super User'
+            ? [
+                {
+                  type: MyTableActionEnum.NEW_ROW,
+                  buttonConfig: {
+                    customCssClass: 'btn btn-primary',
+                    text: 'Add',
+                    icon: 'fa fa-plus',
+                  },
+                },
+                {
+                  type: MyTableActionEnum.EDIT,
+                  buttonConfig: {
+                    customCssClass: 'btn btn-warning',
+                    text: 'Edit',
+                    icon: 'fa fa-edit',
+                  },
+                },
+                {
+                  type: MyTableActionEnum.DELETE,
+                  buttonConfig: {
+                    customCssClass: 'btn btn-danger',
+                    text: 'Delete',
+                    icon: 'fa fa-trash',
+                  },
+                },
+              ]
+            : [],
       });
 
   data = this.router.url.includes('types')
@@ -201,10 +206,10 @@ export class VehicleComponent {
   }
 
   confirmDelete() {
-    if(this.router.url.includes('types')) {
+    if (this.router.url.includes('types')) {
       this.vehicleTypeService.deleteType(this.idItemOperation);
     } else {
-    this.vehicleService.deleteVehicle(this.idItemOperation);
+      this.vehicleService.deleteVehicle(this.idItemOperation);
     }
     this.showDialog = false;
   }
