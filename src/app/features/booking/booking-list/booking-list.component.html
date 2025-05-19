@@ -1,0 +1,25 @@
+@if (showDialog) {
+<app-my-dialog (closedDialog)="closeDialog()" (operationConfirmed)="handleBooking()" />
+}
+<div class="background-wrapper">
+    <div class="overlay-content">
+        @if (authService.getUser()?.ruolo === 'Super User') {
+        <h1>Gestione Prenotazioni</h1>
+        <p>In questa sezione puoi visualizzare e gestire le prenotazioni dei tuoi clienti.
+        </p>
+        } @else {
+        <h1>Le mie Prenotazioni</h1>
+        <p>In questa sezione puoi visualizzare e gestire le tue prenotazioni.
+            }
+        <div class="table-wrapper">
+            @if (route.snapshot.paramMap.get('id')) {
+            <div class="button-wrapper">
+                <app-my-button [buttonConfig]="buttonConfig()" [area]="area()"
+                    (click)="backToCustomersPage()"></app-my-button>
+            </div>
+            }
+            <app-my-table [tableConfig]="tableConfig()" [data]="data()" [area]="area()"
+                (operation)="handleOperation($event)"></app-my-table>
+        </div>
+    </div>
+</div>

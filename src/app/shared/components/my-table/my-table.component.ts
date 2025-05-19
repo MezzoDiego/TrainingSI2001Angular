@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { TableFilterPipe } from './pipes/table-filter.pipe';
 import { TablePaginationPipe } from './pipes/table-pagination.pipe';
 import {
+  MyAction,
   MyTableActionEnum,
   MyTableConfig,
 } from './config/my-table-config';
@@ -100,4 +101,13 @@ export class MyTableComponent {
   handleButtonClick(operation: {text: string, area: string}, id: number) {
     this.operation.emit({ operation, id });
   }
+
+getActionsForRow(row: any): MyAction[] {
+  const config = this.tableConfig();
+  if (config?.rowActionsGetter) {
+    return config.rowActionsGetter(row);
+  }
+  return config.actions ?? [];
+}
+
 }

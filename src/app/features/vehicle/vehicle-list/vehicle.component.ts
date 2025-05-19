@@ -135,8 +135,8 @@ export class VehicleComponent {
           ],
         },
         pagination: {
-          itemPerPage: 10,
-          itemPerPageOptions: [5, 10, 20, 50],
+          itemPerPage: 5,
+          itemPerPageOptions: [3, 5, 10, 20],
         },
         actions: [
           {

@@ -1,21 +1,18 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
-  effect,
   inject,
-  OnChanges,
-  OnInit,
-  signal,
+  signal
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MyButtonComponent } from '../../shared/components/my-button/my-button.component';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { MyButtonConfig } from '../../shared/components/my-button/config/my-button-config';
+import { MyButtonComponent } from '../../shared/components/my-button/my-button.component';
 
 @Component({
   selector: 'app-welcome',
-  imports: [CommonModule, MyButtonComponent, RouterLink],
+  imports: [CommonModule, MyButtonComponent],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.css',
 })

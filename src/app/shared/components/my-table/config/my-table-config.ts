@@ -6,6 +6,7 @@ export class MyTableConfig {
   search?: MySearch;
   pagination?: MyPagination;
   actions?: MyAction[];
+  rowActionsGetter?: (row: any) => MyAction[];
 }
 
 export class MyHeaders {
@@ -34,5 +35,5 @@ export class MyAction {
 }
 
 export enum MyTableActionEnum {
-  NEW_ROW = 'Add', EDIT= 'Edit', DELETE = 'Delete'
+  NEW_ROW = 'Add', EDIT= 'Edit', DELETE = 'Delete', VIEW = 'View', OPERATION= 'Operation', INFO = 'Info'
 }

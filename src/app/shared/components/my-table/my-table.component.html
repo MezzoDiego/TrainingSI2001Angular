@@ -62,7 +62,7 @@
       }
       @if (tableConfig().actions) {
       <td style="white-space: nowrap;">
-        @for (action of tableConfig().actions; track action) {
+        @for (action of getActionsForRow(row); track action) {
         @if (action.type !== actionType.NEW_ROW) {
         <app-my-button class="me-2" [buttonConfig]="action.buttonConfig!" [area]="area()"
           (buttonClick)="handleButtonClick($event, row.id)"></app-my-button>

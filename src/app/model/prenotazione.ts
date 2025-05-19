@@ -1,11 +1,11 @@
 import { Utente } from "./utente";
 import { Veicolo } from "./veicolo";
 
-export interface Booking {
+export interface Prenotazione {
     id?: number;
     dataInizio?: Date;
     dataFine?: Date;
     flagApprovazione?: boolean;
-    user?: Utente;
-    vehicle?: Veicolo;
+    utente?: Utente;
+    veicolo?: Veicolo;
 }

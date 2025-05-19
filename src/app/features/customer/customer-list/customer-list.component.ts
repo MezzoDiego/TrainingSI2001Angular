@@ -68,6 +68,14 @@ export class CustomerListComponent {
           icon: 'fa fa-trash',
         },
       },
+            {
+        type: MyTableActionEnum.VIEW,
+        buttonConfig: {
+          customCssClass: 'btn btn-secondary',
+          text: 'Prenotazioni',
+          icon: 'fa fa-search',
+        },
+      },
     ],
   });
 
@@ -90,8 +98,10 @@ export class CustomerListComponent {
         break;
       case MyTableActionEnum.DELETE.toString():
         this.showDialog = true;
-        console.log('ID da eliminare:', event.id);
         this.idItemOperation = event.id;
+        break;
+        case 'Prenotazioni':
+        this.router.navigate(['booking/', event.id]);
         break;
     }
   }
