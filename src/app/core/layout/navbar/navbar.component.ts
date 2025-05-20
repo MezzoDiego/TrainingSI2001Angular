@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/auth.service';
 import { MyButtonComponent } from '../../../shared/components/my-button/my-button.component';
@@ -11,8 +11,12 @@ import { RouterLink } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
+ngOnInit() {
+  this.authService.getUserId().subscribe(id => this.userId = id);
+}
   authService = inject(AuthService);
+  userId!: string;
   buttonConfig = {
     customCssClass: 'btn btn-primary',
     text: 'Logout',

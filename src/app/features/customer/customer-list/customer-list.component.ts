@@ -30,7 +30,11 @@ export class CustomerListComponent {
       { key: 'nome', label: 'NOME' },
       { key: 'cognome', label: 'COGNOME' },
       { key: 'username', label: 'USERNAME' },
-      { key: 'dataDiNascita', label: 'DATA DI NASCITA' },
+      {
+        key: 'dataDiNascita',
+        label: 'DATA DI NASCITA',
+        valueGetter: (item: Utente) => this.formatDate(item.dataDiNascita!),
+      },
     ],
     order: {
       defaultColumn: 'id',
@@ -68,7 +72,7 @@ export class CustomerListComponent {
           icon: 'fa fa-trash',
         },
       },
-            {
+      {
         type: MyTableActionEnum.VIEW,
         buttonConfig: {
           customCssClass: 'btn btn-secondary',
@@ -77,7 +81,7 @@ export class CustomerListComponent {
         },
       },
     ],
-    showActionsCol: true
+    showActionsCol: true,
   });
 
   data = computed<Utente[]>(() => {
@@ -101,7 +105,7 @@ export class CustomerListComponent {
         this.showDialog = true;
         this.idItemOperation = event.id;
         break;
-        case 'Prenotazioni':
+      case 'Prenotazioni':
         this.router.navigate(['booking/', event.id]);
         break;
     }
@@ -114,5 +118,13 @@ export class CustomerListComponent {
   confirmDelete() {
     this.userService.deleteUser(this.idItemOperation);
     this.showDialog = false;
+  }
+
+  formatDate(dateString: string | Date): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 }

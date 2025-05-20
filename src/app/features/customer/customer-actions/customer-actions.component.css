@@ -22,3 +22,19 @@
 .mywrapper {
   max-width: 100%;
 }
+
+.divider-with-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 2em 0;
+  font-weight: bold;
+}
+
+.divider-with-text::before,
+.divider-with-text::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px dashed white;
+  margin: 0 0.5em;
+}

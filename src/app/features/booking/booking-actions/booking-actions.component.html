@@ -14,10 +14,15 @@
                 <div class="card-body" style="width: 50%; margin: 0 auto;">
                     <form [formGroup]="bookingReactive" (ngSubmit)="handleFormRequest()">
 
+                        @if (bookingReactive.errors?.['intervalloNonValido'] && bookingReactive.touched) {
+                        <div class="text-danger"> L'intervallo tra data inizio e fine deve essere di almeno un'ora e non
+                            possono essere uguali.
+                        </div>
+                        }
                         <div class="mb-sm-1">
                             <label class="form-label">Data Inizio</label>
                             <input type="datetime-local" class="form-control" formControlName="dataInizio"
-                                placeholder="dd/MM/yyyy" [min]="minDataInizio"/>
+                                placeholder="dd/MM/yyyy" [min]="minDataInizio" />
                             @if (bookingReactive.get('dataInizio')?.touched &&
                             bookingReactive.get('dataInizio')?.hasError('required')) {
                             <div class="text-danger">Data Inizio
@@ -28,7 +33,7 @@
                         <div class="mb-sm-1">
                             <label class="form-label">Data Fine</label>
                             <input type="datetime-local" class="form-control" formControlName="dataFine"
-                                placeholder="dd/MM/yyyy" [min]="minDataFine"/>
+                                placeholder="dd/MM/yyyy" [min]="minDataFine" />
                             @if (bookingReactive.get('dataFine')?.touched &&
                             bookingReactive.get('dataFine')?.hasError('required')) {
                             <div class="text-danger">Data Fine
@@ -41,7 +46,8 @@
                             <select class="form-select" formControlName="veicolo" [compareWith]="compareVeicolo">
                                 <option value="">Seleziona</option>
                                 @for (item of vehicles!(); track item.id) {
-                                <option [ngValue]="item">{{item.casaCostruttrice + ' ' + item.modello + ' - ' + item.targa}}</option>
+                                <option [ngValue]="item">{{item.casaCostruttrice + ' ' + item.modello + ' - ' +
+                                    item.targa}}</option>
                                 }
 
                             </select>

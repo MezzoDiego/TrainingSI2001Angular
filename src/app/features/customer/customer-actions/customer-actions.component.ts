@@ -11,14 +11,33 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserService } from '../../user.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
-export const passwordMatchValidator: ValidatorFn = (
+export const optionalPasswordValidator: ValidatorFn = (
   group: AbstractControl
 ): ValidationErrors | null => {
-  const password = group.get('password')?.value;
-  const confirmPassword = group.get('confermaPassword')?.value;
+  const password = group.get('password')?.value?.trim();
+  const confermaPassword = group.get('confermaPassword')?.value?.trim();
 
-  return password === confirmPassword ? null : { passwordMismatch: true };
+  const isOneFilled = password || confermaPassword;
+
+  if (!isOneFilled) return null;
+
+  const errors: any = {};
+
+  if (!password) {
+    errors.passwordRequired = true;
+  }
+
+  if (!confermaPassword) {
+    errors.confermaPasswordRequired = true;
+  }
+
+  if (password && confermaPassword && password !== confermaPassword) {
+    errors.passwordMismatch = true;
+  }
+
+  return Object.keys(errors).length ? errors : null;
 };
 
 @Component({
@@ -33,6 +52,7 @@ export class CustomerActionsComponent implements OnInit {
   router = inject(Router);
   fb = inject(FormBuilder);
   userService = inject(UserService);
+  authService = inject(AuthService);
 
   user = computed(() => this.userService.selectedUser());
 
@@ -42,7 +62,10 @@ export class CustomerActionsComponent implements OnInit {
   userEffect = effect(() => {
     const computedUser = this.user();
     if (computedUser && !this.router.url.includes('create')) {
-      this.customerReactive.patchValue(computedUser);
+      const patchData = { ...computedUser };
+      delete patchData.password;
+
+      this.customerReactive.patchValue(patchData);
     }
   });
 
@@ -53,11 +76,11 @@ export class CustomerActionsComponent implements OnInit {
       cognome: this.fb.nonNullable.control('', [Validators.required]),
       username: this.fb.nonNullable.control('', [Validators.required]),
       dataDiNascita: this.fb.nonNullable.control('', [Validators.required]),
-      password: this.fb.nonNullable.control('', [Validators.required]),
-      confermaPassword: this.fb.nonNullable.control('', [Validators.required]),
+      password: this.fb.nonNullable.control(''),
+      confermaPassword: this.fb.nonNullable.control(''),
     },
     {
-      validators: passwordMatchValidator,
+      validators: optionalPasswordValidator,
     }
   );
 
@@ -67,15 +90,22 @@ export class CustomerActionsComponent implements OnInit {
       : this.router.url.includes('update')
       ? 'update'
       : '';
-    let id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
+    const id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     if (id) {
       this.userService.findUserById(id);
     }
-    if(this.urlKeyword === 'update') {
-      this.customerReactive.removeValidators(passwordMatchValidator);
-      this.customerReactive.get('password')?.clearValidators();
-      this.customerReactive.get('confermaPassword')?.clearValidators();
+
+    if (
+      this.urlKeyword === 'update' &&
+      this.authService.getUser()?.ruolo === 'Customer'
+    ) {
+      this.customerReactive.setValidators(optionalPasswordValidator);
+    } else if (this.urlKeyword === 'update') {
+      this.customerReactive.clearValidators();
     }
+
+    this.customerReactive.updateValueAndValidity();
   }
 
   handleFormRequest() {
@@ -84,11 +114,23 @@ export class CustomerActionsComponent implements OnInit {
       this.router.navigate(['/customer']);
     } else if (this.urlKeyword === 'update') {
       this.userService.updateUser(this.customerReactive.value);
-      this.router.navigate(['/customer']);
+      if (this.authService.getUser()?.ruolo === 'Customer') {
+        this.authService.logout();
+      }
+      this.authService.getUser()?.ruolo === 'Super User'
+        ? this.router.navigate(['/customer'])
+        : this.router.navigate(['/welcome']);
     }
   }
 
-  // compareRole = (a: Tipologia, b: Tipologia): boolean => {
-  //   return a && b ? a.id === b.id : a === b;
-  // };
+  isUnchanged(): boolean {
+    const current = this.customerReactive.value;
+    return (
+      current.nome === this.user()?.nome &&
+      current.cognome === this.user()?.cognome &&
+      current.dataDiNascita === this.user()?.dataDiNascita &&
+      current.username === this.user()?.username &&
+      current.password === ''
+    );
+  }
 }

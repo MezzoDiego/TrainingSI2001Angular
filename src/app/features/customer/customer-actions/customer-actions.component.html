@@ -1,7 +1,14 @@
 <div class="background-wrapper">
     <div class="overlay-content">
+        @if (this.authService.getUser()?.ruolo === 'Super User') {
         <h1>Gestione Clientela</h1>
         <p>In questa sezione puoi visualizzare, aggiungere, modificare o eliminare gli account dei tuoi clienti.</p>
+        } @else {
+        <h1>Profilo Utente</h1>
+        <p>In questa sezione puoi visualizzare e modificare il tuo profilo utente</p>
+        <p style="font-weight: bold; margin-bottom: 0; font-size: smaller;">Nota Bene: la modifica comporterà il logout
+            dalla sessione attuale!</p>
+        }
         <div class="mywrapper">
             <div class="card text-white bg-primary bg-opacity-50">
                 <div class="card-header text-center">
@@ -13,7 +20,18 @@
                 </div>
                 <div class="card-body" style="width: 50%; margin: 0 auto;">
                     <form [formGroup]="customerReactive" (ngSubmit)="handleFormRequest()">
-
+                        <div *ngIf="customerReactive.errors?.['passwordRequired'] && customerReactive.touched"
+                            class="text-danger">
+                            La password è obbligatoria se vuoi cambiarla.
+                        </div>
+                        <div *ngIf="customerReactive.errors?.['confermaPasswordRequired'] && customerReactive.touched"
+                            class="text-danger">
+                            Confermare la password inserita.
+                        </div>
+                        <div *ngIf="customerReactive.errors?.['passwordMismatch'] && customerReactive.touched"
+                            class="text-danger">
+                            Le password non corrispondono.
+                        </div>
                         <div class="mb-sm-1">
                             <label class="form-label">Nome</label>
                             <input type="text" class="form-control" formControlName="nome"
@@ -58,36 +76,36 @@
                                 obbligatorio</div>
                             }
                         </div>
-                        @if (urlKeyword === 'create') {
+                        @if (urlKeyword === 'create' || this.authService.getUser()?.ruolo === 'Customer') {
+                        @if (this.authService.getUser()?.ruolo === 'Customer') {
+                        <div class="divider-with-text">
+                            <span>Reset Password</span>
+                        </div>
+                        }
                         <div class="mb-sm-1">
-                            <label class="form-label">Password</label>
+                            <label class="form-label">{{ authService.getUser()?.ruolo === 'Customer' ? 'Nuova ' : '' }}Password</label>
                             <input type="password" class="form-control" formControlName="password"
                                 placeholder="inserisci password..." />
-                            @if (customerReactive.get('password')?.touched &&
-                            customerReactive.get('password')?.hasError('required')) {
-                            <div class="text-danger">Password
-                                obbligatoria</div>
-                            }
                         </div>
 
                         <div class="mb-sm-1">
-                            <label class="form-label">Conferma Password</label>
+                            <label class="form-label">Conferma {{ authService.getUser()?.ruolo === 'Customer' ? 'Nuova ' : '' }} Password</label>
                             <input type="password" class="form-control" formControlName="confermaPassword"
                                 placeholder="conferma password..." />
-                            @if (customerReactive.get('confermaPassword')?.touched &&
-                            customerReactive.get('confermaPassword')?.hasError('required')) {
-                            <div class="text-danger">Conferma Password
-                                obbligatoria</div>
-                            }
-                            @if (customerReactive.hasError('passwordMismatch') && customerReactive.dirty) {
-                            <div class="text-danger">Le password non corrispondono</div>
-                            }
                         </div>
                         }
 
+                        @if (urlKeyword === 'update') {
+                        <button type="submit" class="btn btn-primary mt-3"
+                            [disabled]="customerReactive.invalid || isUnchanged()">
+                            Submit</button>
+                        } @else {
                         <button type="submit" class="btn btn-primary mt-3" [disabled]="customerReactive.invalid">
                             Submit</button>
+                        }
+                        @if (this.authService.getUser()?.ruolo === 'Super User') {
                         <a routerLink="/customer" class="btn btn-secondary mt-3">Back</a>
+                        }
                     </form>
                 </div>
             </div>

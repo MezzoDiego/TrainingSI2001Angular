@@ -1,9 +1,12 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -12,6 +15,24 @@ import { BookingService } from '../booking.service';
 import { VehicleService } from '../../vehicle/vehicle.service';
 import { Prenotazione } from '../../../model/prenotazione';
 import { AuthService } from '../../../core/auth/auth.service';
+
+export const intervalloPrenotazioneValido: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+  const dataInizio = new Date(group.get('dataInizio')?.value);
+  const dataFine = new Date(group.get('dataFine')?.value);
+
+  if (!dataInizio || !dataFine || isNaN(dataInizio.getTime()) || isNaN(dataFine.getTime())) {
+    return null;
+  }
+
+  const differenzaMs = dataFine.getTime() - dataInizio.getTime();
+  const unOraInMs = 60 * 60 * 1000;
+
+  if (differenzaMs < unOraInMs) {
+    return { intervalloNonValido: true };
+  }
+
+  return null;
+};
 
 @Component({
   selector: 'app-booking-actions',
@@ -50,7 +71,7 @@ export class BookingActionsComponent implements OnInit {
     dataInizio: this.fb.nonNullable.control('', [Validators.required]),
     dataFine: this.fb.nonNullable.control('', [Validators.required]),
     veicolo: this.fb.nonNullable.control('', [Validators.required]),
-  });
+  }, {validators: intervalloPrenotazioneValido});
 
   urlKeyword = '';
   errorMessage = '';

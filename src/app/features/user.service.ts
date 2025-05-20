@@ -4,10 +4,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Utente } from '../model/utente';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   private apiServerUrl = environment.apiBaseUrl;
   private http = inject(HttpClient);
 
@@ -30,7 +29,10 @@ export class UserService {
 
   getAllCustomerUsers() {
     this.http
-      .get<Utente[]>(`${this.apiServerUrl}/api/utente/getCustomers`, this.httpOptions)
+      .get<Utente[]>(
+        `${this.apiServerUrl}/api/utente/getCustomers`,
+        this.httpOptions
+      )
       .subscribe({
         next: (data) => this._users.set(data),
         error: (error) => {
@@ -39,7 +41,6 @@ export class UserService {
         },
       });
   }
-
 
   findUserById(id: number) {
     this.http
@@ -95,9 +96,7 @@ export class UserService {
       )
       .subscribe({
         next: () => {
-          const filteredList = this._users().filter(
-            (u) => u.id !== userId
-          );
+          const filteredList = this._users().filter((u) => u.id !== userId);
           this._users.set(filteredList);
         },
         error: (error) => console.error('Errore eliminazione utente:', error),

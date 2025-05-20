@@ -1,9 +1,4 @@
-import {
-  Component,
-  inject,
-  input,
-  output,
-} from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyButtonComponent } from '../my-button/my-button.component';
 import { FormsModule } from '@angular/forms';
@@ -26,7 +21,7 @@ import { AuthService } from '../../../core/auth/auth.service';
     FormsModule,
     TableFilterPipe,
     TablePaginationPipe,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './my-table.component.html',
   styleUrl: './my-table.component.css',
@@ -35,7 +30,10 @@ export class MyTableComponent {
   router = inject(Router);
   tableConfig = input.required<MyTableConfig>();
   data = input.required<any[]>();
-  operation = output<{ operation: {text: string, area: string}; id: number }>();
+  operation = output<{
+    operation: { text: string; area: string };
+    id: number;
+  }>();
   area = input.required<string>();
 
   authService = inject(AuthService);
@@ -45,7 +43,7 @@ export class MyTableComponent {
   // Ordinamento
   sortedColumn? = '';
   sortDirection: 'asc' | 'desc' = 'asc';
-  // Filtraggio 
+  // Filtraggio
   selectedFilterColumn = '';
   filterText = '';
   //Paginazione
@@ -101,16 +99,21 @@ export class MyTableComponent {
     }
   }
 
-  handleButtonClick(operation: {text: string, area: string}, id: number) {
+  handleButtonClick(operation: { text: string; area: string }, id: number) {
     this.operation.emit({ operation, id });
   }
 
-getActionsForRow(row: any): MyAction[] {
-  const config = this.tableConfig();
-  if (config?.rowActionsGetter) {
-    return config.rowActionsGetter(row);
+  getActionsForRow(row: any): MyAction[] {
+    const config = this.tableConfig();
+    if (config?.rowActionsGetter) {
+      return config.rowActionsGetter(row);
+    }
+    return config.actions ?? [];
   }
-  return config.actions ?? [];
-}
 
+getLabelFromKey(key: string): string {
+  return (
+    this.tableConfig().headers?.find(h => h.key === key)?.label || key
+  );
+}
 }
