@@ -1,25 +1,37 @@
 .logo {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-font-size: larger;
-color: black; 
-font-weight: bolder; 
-background-color: #0066CC;
-padding: 12px;
-border-radius: 50%;
-border: 1px solid black
+  font-size: larger;
+  color: black;
+  font-weight: bolder;
+  background-color: #0066CC;
+  padding: 12px;
+  border-radius: 50%;
+  border: 1px solid black
 }
 
 .user {
-font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-font-size: large;
-color: black; 
-font-weight: bold; 
-padding: 0;
-border-radius: 5%;
-margin-top: 1%;
-margin-bottom: 2%;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: large;
+  color: black;
+  font-weight: bold;
+  padding: 0;
+  border-radius: 5%;
+  margin-top: 1%;
+  margin-bottom: 2%;
 }
 
 .mt-2-5 {
   margin-top: 0.75rem;
+}
+
+.logo-img {
+  background-image: url('../../../../assets/caricon.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: inline-block; /* fondamentale! */
+  width: 80px; /* scegli la dimensione adatta */
+  height: 80px;
+  margin-top: -1%;
+  margin-bottom: -1%;
+  border-right: 1px solid black;
 }
