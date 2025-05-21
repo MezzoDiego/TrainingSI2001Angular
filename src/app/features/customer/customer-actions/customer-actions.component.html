@@ -75,6 +75,10 @@
                             <div class="text-danger">Username
                                 obbligatorio</div>
                             }
+                            @if (customerReactive.get('username')?.touched &&
+                            customerReactive.get('username')?.hasError('maxlength')) {
+                            <div class="text-danger">Lunghezza Massima: 10 caratteri</div>
+                            }
                         </div>
                         @if (urlKeyword === 'create' || this.authService.getUser()?.ruolo === 'Customer') {
                         @if (this.authService.getUser()?.ruolo === 'Customer') {
@@ -83,13 +87,15 @@
                         </div>
                         }
                         <div class="mb-sm-1">
-                            <label class="form-label">{{ authService.getUser()?.ruolo === 'Customer' ? 'Nuova ' : '' }}Password</label>
+                            <label class="form-label">{{ authService.getUser()?.ruolo === 'Customer' ? 'Nuova ' : ''
+                                }}Password</label>
                             <input type="password" class="form-control" formControlName="password"
                                 placeholder="inserisci password..." />
                         </div>
 
                         <div class="mb-sm-1">
-                            <label class="form-label">Conferma {{ authService.getUser()?.ruolo === 'Customer' ? 'Nuova ' : '' }} Password</label>
+                            <label class="form-label">Conferma {{ authService.getUser()?.ruolo === 'Customer' ? 'Nuova '
+                                : '' }} Password</label>
                             <input type="password" class="form-control" formControlName="confermaPassword"
                                 placeholder="conferma password..." />
                         </div>

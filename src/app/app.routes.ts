@@ -1,4 +1,3 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
 
@@ -15,6 +14,7 @@ export const routes: Routes = [
     path: 'vehicle',
     loadChildren: () =>
       import('./features/vehicle/vehicle.routes').then((m) => m.vehicleRoutes),
+    canActivate: [authGuard],
   },
   {
     path: 'customer',
@@ -22,11 +22,13 @@ export const routes: Routes = [
       import('./features/customer/customer.routes').then(
         (m) => m.customerRoutes
       ),
+    canActivate: [authGuard],
   },
-     {
+  {
     path: 'booking',
     loadChildren: () =>
-      import('./features/booking/booking.routes').then(m => m.bookingRoutes),
+      import('./features/booking/booking.routes').then((m) => m.bookingRoutes),
+    canActivate: [authGuard],
   },
   {
     path: 'login',

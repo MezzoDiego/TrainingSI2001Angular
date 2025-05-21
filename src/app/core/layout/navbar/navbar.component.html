@@ -21,14 +21,19 @@
         }
     </div>
   </div>
-  <div class="col-md-2 d-flex justify-content-end gap-4">
+<div class="col-md-2 d-flex justify-content-end gap-4">
+  <div class="d-flex gap-2">
+    <i class="fa fa-user fa-2x mt-2-5"></i>
     <div class="navbar-text text-start flex-shrink-1 user">
       Utente:<br />
       {{ authService.getUser()?.username | uppercase }}
     </div>
-    <div class="navbar-text me-3">
-      <app-my-button [buttonConfig]="buttonConfig" (click)="logout()" />
-    </div>
   </div>
+  
+  <div class="navbar-text me-3">
+    <app-my-button [buttonConfig]="buttonConfig" (click)="logout()" />
+  </div>
+</div>
+
 
 </nav>

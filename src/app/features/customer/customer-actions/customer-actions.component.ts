@@ -74,7 +74,7 @@ export class CustomerActionsComponent implements OnInit {
       id: this.fb.control(null),
       nome: this.fb.nonNullable.control('', [Validators.required]),
       cognome: this.fb.nonNullable.control('', [Validators.required]),
-      username: this.fb.nonNullable.control('', [Validators.required]),
+      username: this.fb.nonNullable.control('', [Validators.required, Validators.maxLength(10)]),
       dataDiNascita: this.fb.nonNullable.control('', [Validators.required]),
       password: this.fb.nonNullable.control(''),
       confermaPassword: this.fb.nonNullable.control(''),
