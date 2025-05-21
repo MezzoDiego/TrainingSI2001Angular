@@ -4,10 +4,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MySnackbarComponent } from '../../../shared/components/my-snackbar/my-snackbar.component';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MySnackbarComponent],
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

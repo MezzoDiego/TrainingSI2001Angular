@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Tipologia } from '../../model/tipologia';
 import { AuthService } from '../../core/auth/auth.service';
+import { SnackbarService } from '../../shared/components/my-snackbar/my-snackbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class VehicleTypeService {
   private apiServerUrl = environment.apiBaseUrl;
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private snackbarService = inject(SnackbarService);
 
   private _selectedType: WritableSignal<Tipologia | undefined> = signal<
     Tipologia | undefined
@@ -70,6 +72,13 @@ export class VehicleTypeService {
           this._types.set([...this._types(), addedType]);
         },
         error: (error) => console.error('Errore aggiunta tipologia:', error),
+        complete: () =>
+          this.snackbarService.openSnackBar(
+            'Operazione effettuata correttamente.',
+            ['bg-success', 'bg-opacity-50', 'text-white'],
+            3000,
+            true
+          ),
       });
   }
 
@@ -89,6 +98,13 @@ export class VehicleTypeService {
         },
         error: (error) =>
           console.error('Errore aggiornamento tipologia:', error),
+        complete: () =>
+          this.snackbarService.openSnackBar(
+            'Operazione effettuata correttamente.',
+            ['bg-success', 'bg-opacity-50', 'text-white'],
+            3000,
+            true
+          ),
       });
   }
 
@@ -105,6 +121,13 @@ export class VehicleTypeService {
         },
         error: (error) =>
           console.error('Errore eliminazione tipologia:', error),
+        complete: () =>
+          this.snackbarService.openSnackBar(
+            'Operazione effettuata correttamente.',
+            ['bg-success', 'bg-opacity-50', 'text-white'],
+            3000,
+            true
+          ),
       });
   }
 }

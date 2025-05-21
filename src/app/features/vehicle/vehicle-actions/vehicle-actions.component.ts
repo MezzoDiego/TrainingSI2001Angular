@@ -133,4 +133,29 @@ export class VehicleActionsComponent implements OnInit {
   compareTipologia = (a: Tipologia, b: Tipologia): boolean => {
     return a && b ? a.id === b.id : a === b;
   };
+
+    isUnchanged(): boolean {
+    const current = this.vehicleReactive.value;
+    return (
+      +current.annoImmatricolazione === +this.vehicle()?.annoImmatricolazione! &&
+      current.casaCostruttrice === this.vehicle()?.casaCostruttrice &&
+      +current.cilindrata === +this.vehicle()?.cilindrata! &&
+      current.consumoMedioCarburanteExtraurbano === this.vehicle()?.consumoMedioCarburanteExtraurbano &&
+      current.consumoMedioCarburanteUrbano === this.vehicle()?.consumoMedioCarburanteUrbano &&
+      current.emissioni === this.vehicle()?.emissioni &&
+      current.kilometraggio === this.vehicle()?.kilometraggio &&
+      current.modello === this.vehicle()?.modello &&
+      current.numeroTelaio === this.vehicle()?.numeroTelaio &&
+      +current.potenza === +this.vehicle()?.potenza! &&
+      current.targa === this.vehicle()?.targa &&
+      current.tipologia.id === this.vehicle()?.tipologia!.id &&
+      current.alimentazione === this.vehicle()?.alimentazione
+    );
+  }
+      isUnchangedType(): boolean {
+    const current = this.typeReactive.value;
+    return (
+      current.descrizione === this.type()?.descrizione
+    );
+  }
 }

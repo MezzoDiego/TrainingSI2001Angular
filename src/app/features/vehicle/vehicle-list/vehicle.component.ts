@@ -14,6 +14,7 @@ import { MyButtonComponent } from '../../../shared/components/my-button/my-butto
 import { VehicleTypeService } from '../vehicle-type.service';
 import { Tipologia } from '../../../model/tipologia';
 import { AuthService } from '../../../core/auth/auth.service';
+import { MySnackbarComponent } from '../../../shared/components/my-snackbar/my-snackbar.component';
 
 @Component({
   selector: 'app-vehicle',
@@ -22,6 +23,7 @@ import { AuthService } from '../../../core/auth/auth.service';
     MyTableComponent,
     MyDialogComponent,
     MyButtonComponent,
+    MySnackbarComponent
   ],
   standalone: true,
   templateUrl: './vehicle.component.html',

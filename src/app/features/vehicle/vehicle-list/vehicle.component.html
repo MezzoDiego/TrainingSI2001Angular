@@ -1,3 +1,4 @@
+<app-my-snackbar />
 @if (showDialog && authService.getUser()?.ruolo === 'Super User') {
 <app-my-dialog (closedDialog)="closeDialog()" (operationConfirmed)="confirmDelete()" />
 }

@@ -9,10 +9,11 @@ import {
 } from '../../../shared/components/my-table/config/my-table-config';
 import { Utente } from '../../../model/utente';
 import { UserService } from '../../user.service';
+import { MySnackbarComponent } from '../../../shared/components/my-snackbar/my-snackbar.component';
 
 @Component({
   selector: 'app-customer-list',
-  imports: [CommonModule, MyTableComponent, MyDialogComponent],
+  imports: [CommonModule, MyTableComponent, MyDialogComponent, MySnackbarComponent],
   standalone: true,
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css',

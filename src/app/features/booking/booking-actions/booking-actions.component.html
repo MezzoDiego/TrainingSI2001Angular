@@ -58,7 +58,7 @@
                         </div>
 
 
-                        <button type="submit" class="btn btn-primary mt-3" [disabled]="bookingReactive.invalid">
+                        <button type="submit" class="btn btn-primary mt-3" [disabled]="bookingReactive.invalid || isUnchanged()">
                             Submit</button>
                         <a routerLink="/booking" class="btn btn-secondary mt-3">Back</a>
                     </form>

@@ -9,10 +9,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { MyButtonConfig } from '../../shared/components/my-button/config/my-button-config';
 import { MyButtonComponent } from '../../shared/components/my-button/my-button.component';
+import { MySnackbarComponent } from "../../shared/components/my-snackbar/my-snackbar.component";
 
 @Component({
   selector: 'app-welcome',
-  imports: [CommonModule, MyButtonComponent],
+  imports: [CommonModule, MyButtonComponent, MySnackbarComponent],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.css',
 })

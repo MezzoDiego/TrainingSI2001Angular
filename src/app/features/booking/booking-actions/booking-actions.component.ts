@@ -130,4 +130,13 @@ export class BookingActionsComponent implements OnInit {
     const mm = pad(date.getMinutes());
     return `${yyyy}-${MM}-${dd}T${hh}:${mm}`;
   }
+
+    isUnchanged(): boolean {
+    const current = this.bookingReactive.value;
+    return (
+      current.dataInizio === this.booking()?.dataInizio &&
+      current.dataFine === this.booking()?.dataFine &&
+      current.veicolo.id === this.booking()?.veicolo!.id
+    );
+  }
 }

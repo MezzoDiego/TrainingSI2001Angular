@@ -9,6 +9,7 @@ export interface Veicolo {
     cilindrata?: number;
     potenza?: number;
     emissioni?: string;
+    alimentazione?: string;
     numeroTelaio?: string;
     kilometraggio?: string;
     consumoMedioCarburanteUrbano?: string;

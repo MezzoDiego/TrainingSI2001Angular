@@ -7,6 +7,7 @@ import {
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Veicolo } from '../../model/veicolo';
+import { SnackbarService } from '../../shared/components/my-snackbar/my-snackbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ import { Veicolo } from '../../model/veicolo';
 export class VehicleService {
   private apiServerUrl = environment.apiBaseUrl;
   private http = inject(HttpClient);
+  private snackbarService = inject(SnackbarService);
 
   private _selectedVehicle: WritableSignal<Veicolo | undefined> = signal<
     Veicolo | undefined
@@ -69,6 +71,7 @@ export class VehicleService {
           this._vehicles.set([...this._vehicles(), addedVehicle]);
         },
         error: (error) => console.error('Errore aggiunta veicolo:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 
@@ -87,6 +90,7 @@ export class VehicleService {
           this._vehicles.set(updatedList);
         },
         error: (error) => console.error('Errore aggiornamento veicolo:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 
@@ -104,6 +108,7 @@ export class VehicleService {
           this._vehicles.set(filteredList);
         },
         error: (error) => console.error('Errore eliminazione veicolo:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 }

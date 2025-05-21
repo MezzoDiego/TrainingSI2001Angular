@@ -22,6 +22,7 @@ import { MyDialogComponent } from '../../../shared/components/my-dialog/my-dialo
 import { MyTableComponent } from '../../../shared/components/my-table/my-table.component';
 import { MyButtonComponent } from '../../../shared/components/my-button/my-button.component';
 import { MyButtonConfig } from '../../../shared/components/my-button/config/my-button-config';
+import { MySnackbarComponent } from "../../../shared/components/my-snackbar/my-snackbar.component";
 
 @Component({
   selector: 'app-booking-list',
@@ -30,7 +31,8 @@ import { MyButtonConfig } from '../../../shared/components/my-button/config/my-b
     MyDialogComponent,
     MyTableComponent,
     MyButtonComponent,
-  ],
+    MySnackbarComponent
+],
   standalone: true,
   templateUrl: './booking-list.component.html',
   styleUrl: './booking-list.component.css',

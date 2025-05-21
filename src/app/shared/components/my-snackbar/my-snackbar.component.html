@@ -1,0 +1,15 @@
+@if (visible()) {
+<div
+  class="toast show position-fixed start-50 translate-middle-x"
+  [style.marginTop]="this.authService.isLoggedIn() ? '0.5rem' : '-3rem'"
+  style="min-width: 250px; z-index: 1055;"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  [ngClass]="classes()"
+>
+  <div class="toast-body">
+    {{ message() }}
+  </div>
+</div>
+}

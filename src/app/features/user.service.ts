@@ -2,6 +2,7 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Utente } from '../model/utente';
+import { SnackbarService } from '../shared/components/my-snackbar/my-snackbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ import { Utente } from '../model/utente';
 export class UserService {
   private apiServerUrl = environment.apiBaseUrl;
   private http = inject(HttpClient);
+  private snackbarService = inject(SnackbarService);
 
   private _selectedUser: WritableSignal<Utente | undefined> = signal<
     Utente | undefined
@@ -67,6 +69,7 @@ export class UserService {
           this._users.set([...this._users(), addedUser]);
         },
         error: (error) => console.error('Errore aggiunta utente:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 
@@ -85,6 +88,7 @@ export class UserService {
           this._users.set(updatedList);
         },
         error: (error) => console.error('Errore aggiornamento utente:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 
@@ -100,6 +104,7 @@ export class UserService {
           this._users.set(filteredList);
         },
         error: (error) => console.error('Errore eliminazione utente:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 }

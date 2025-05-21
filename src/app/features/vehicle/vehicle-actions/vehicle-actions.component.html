@@ -32,7 +32,7 @@
                             }
                         </div>
 
-                        <button type="submit" class="btn btn-primary mt-3" [disabled]="typeReactive.invalid">
+                        <button type="submit" class="btn btn-primary mt-3" [disabled]="typeReactive.invalid || isUnchangedType()">
                             Submit</button>
                         <a routerLink="/vehicle/types" class="btn btn-secondary mt-3">Back</a>
                     </form>
@@ -197,7 +197,7 @@
                         </div>
 
 
-                        <button type="submit" class="btn btn-primary mt-3" [disabled]="vehicleReactive.invalid">
+                        <button type="submit" class="btn btn-primary mt-3" [disabled]="vehicleReactive.invalid || isUnchanged()">
                             Submit</button>
                         <a routerLink="/vehicle" class="btn btn-secondary mt-3">Back</a>
                     </form>

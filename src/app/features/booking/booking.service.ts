@@ -3,6 +3,7 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Prenotazione } from '../../model/prenotazione';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../../shared/components/my-snackbar/my-snackbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class BookingService {
   private apiServerUrl = environment.apiBaseUrl;
   private http = inject(HttpClient);
   private router = inject(Router);
+  private snackbarService = inject(SnackbarService);
 
   private _selectedBooking: WritableSignal<Prenotazione | undefined> = signal<
     Prenotazione | undefined
@@ -94,6 +96,7 @@ export class BookingService {
           this.router.navigate(['/booking']);
         },
         error: (error) => console.error('Errore aggiunta prenotazione:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 
@@ -114,6 +117,7 @@ export class BookingService {
         },
         error: (error) =>
           console.error('Errore aggiornamento prenotazione:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 
@@ -135,8 +139,10 @@ export class BookingService {
           );
           this._userBookings.set(updatedUserBookings);
         },
-        error: (error) =>
-          console.error('Errore eliminazione prenotazione:', error),
+        error: (error) => {
+          console.error('Errore eliminazione prenotazione:', error)
+        },
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 
@@ -163,6 +169,7 @@ export class BookingService {
           }
         },
         error: (error) => console.error('Errore gestione prenotazione:', error),
+        complete: () => this.snackbarService.openSnackBar('Operazione effettuata correttamente.', ['bg-success', 'bg-opacity-50', 'text-white'], 3000, true)
       });
   }
 }
