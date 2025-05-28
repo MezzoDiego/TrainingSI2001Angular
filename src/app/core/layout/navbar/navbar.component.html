@@ -1,40 +1,59 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-primary" style="padding: 0;">
- <span class="logo-img"></span>
-<a class="navbar-brand ms-3 logo"
-    href="#">RentalCars</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+<nav class="bg-blue-600 text-black flex items-center h-16 justify-between px-4 relative">
+  <div class="flex items-center gap-3">
+    <span class="logo-img"></span>
+    <a href="#" class="font-bold logo no-underline">RentalCars</a>
+  </div>
+
+    <!-- Menu Toggle per mobile -->
+  <button
+    class="block lg:hidden text-white"
+    type="button"
+    (click)="toggleMenu = !toggleMenu"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+      viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" routerLink="vehicle">Parco Auto</a>
-      @if (authService.getUser()?.ruolo === 'Super User') {
-      <a class="nav-item nav-link" routerLink="customer">Gestione Clientela</a>
-      }@else {
-      <a class="nav-item nav-link" [routerLink]="['/customer/update', userId]">Profilo Utente</a>
-        }
-        @if (authService.getUser()?.ruolo === 'Super User') {
-        <a class="nav-item nav-link" routerLink="booking">Prenotazioni</a>
-        } @else {
-        <a class="nav-item nav-link" routerLink="booking">Le mie Prenotazioni</a>
-        }
-    </div>
+
+  <div [ngClass]="{ 'hidden': !toggleMenu }" class="w-full lg:flex lg:items-center lg:w-auto mt-2 lg:mt-0">
+  <div class="absolute left-1/2 transform -translate-x-1/2 flex te">
+    <a
+      class="flex items-center justify-center px-6 h-16 hover:bg-blue-700 border-r text-black no-underline"
+      routerLink="/"
+    >
+      Home
+    </a>
+    <a
+      class="flex items-center justify-center px-6 h-16 hover:bg-blue-700 border-r text-black no-underline"
+      routerLink="/vehicle"
+    >
+      Parco Auto
+    </a>
+    <a
+      class="flex items-center justify-center px-6 h-16 hover:bg-blue-700 border-r text-black no-underline"
+      [routerLink]="this.authService.getUser()?.ruolo === 'Super User' ? '/customer' : ['/customer/update', userId]"
+    >
+      {{this.authService.getUser()?.ruolo === 'Super User' ? 'Gestione Clientela' : 'Profilo Utente'}}
+    </a>
+    <a
+      class="flex items-center justify-center px-6 h-16 hover:bg-blue-700 border-r text-black no-underline"
+      routerLink="/booking"
+    >
+      {{this.authService.getUser()?.ruolo === 'Super User' ? 'Prenotazioni' : 'Le Mie Prenotazioni'}}
+    </a>
   </div>
-<div class="col-md-2 d-flex justify-content-end gap-4">
-  <div class="d-flex gap-2">
-    <i class="fa fa-user fa-2x mt-2-5"></i>
-    <div class="navbar-text text-start flex-shrink-1 user">
-      Utente:<br />
-      {{ authService.getUser()?.username | uppercase }}
-    </div>
   </div>
-  
-  <div class="navbar-text me-1" style="border-left: 1px solid black;">
+
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 text-sm">
+      <i class="fa fa-user text-black text-xl"></i>
+      <div>
+        Utente:<br />
+        {{ authService.getUser()?.username | uppercase }}
+      </div>
+    </div>
     <app-my-button [buttonConfig]="buttonConfig" (click)="logout()" />
   </div>
-</div>
-
-
 </nav>

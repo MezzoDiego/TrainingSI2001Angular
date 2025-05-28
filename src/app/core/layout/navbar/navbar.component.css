@@ -29,9 +29,10 @@
   background-size: cover;
   background-repeat: no-repeat;
   display: inline-block; /* fondamentale! */
-  width: 80px; /* scegli la dimensione adatta */
-  height: 80px;
+  width: 60px; /* scegli la dimensione adatta */
+  height: 60px;
   margin-top: -1%;
   margin-bottom: -1%;
+  margin-left: -12%;
   border-right: 1px solid black;
 }

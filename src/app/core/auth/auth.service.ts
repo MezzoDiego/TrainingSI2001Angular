@@ -23,10 +23,6 @@ export class AuthService {
   readonly isLoggedIn = computed(() => !!this.user()?.token);
 
   constructor() {
-    const storedUser = sessionStorage.getItem('user');
-    if (storedUser) {
-      this.user.set(JSON.parse(storedUser));
-    }
     const token = localStorage.getItem('jwt-token');
     const username = localStorage.getItem('username');
 

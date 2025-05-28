@@ -12,13 +12,15 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit{
+  toggleMenu = false;
+
 ngOnInit() {
   this.authService.getUserId().subscribe(id => this.userId = id);
 }
   authService = inject(AuthService);
   userId!: string;
   buttonConfig = {
-    customCssClass: 'btn btn-primary',
+    customCssClass: 'btn btn-primary text-black',
     text: 'Logout',
     icon: 'fa fa-sign-out',
   }

@@ -1,4 +1,4 @@
-html,
+/* html,
 body {
   height: 100%;
 }
@@ -39,7 +39,7 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-
+*/
 .form-logo {
 font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 font-size: larger;
@@ -50,4 +50,4 @@ padding: 5%;
 border-radius: 50%;
 border: 2px solid black;
   
-}
+} 
