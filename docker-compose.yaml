@@ -1,0 +1,34 @@
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    ports:
+      - 3307:3306
+    volumes:
+      - /tmp/docker-volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: rentalcars
+  backend:
+    build:
+      context: ./rentalcars
+      dockerfile: Dockerfile
+    container_name: backend
+    depends_on:
+      - mysql  
+    ports:
+      - 8080:8080
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/rentalcars
+      DB_USERNAME: root
+      DB_PASSWORD: root
+
+  frontend:
+    build:
+      context: ./rentalcarsfe
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
